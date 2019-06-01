@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'homepage.dart';
+import 'UserSearch.dart';
 
 /// main class of the whole app, defines the theme data here
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginPage(),
         '/home': (context) => HomePage(),
+        '/UserSearch': (context) => UserSearch(),
       },
     );
   }

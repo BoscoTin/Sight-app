@@ -49,4 +49,9 @@ class Functions{
   static void Function(BuildContext) backHome = (BuildContext context){
     Navigator.popUntil(context, ModalRoute.withName('/home'));
   };
+
+  /// function variable for navigation pop
+  static void Function(BuildContext) backPage = (BuildContext context){
+    Navigator.pop(context);
+  };
 }

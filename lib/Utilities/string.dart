@@ -7,8 +7,10 @@ class Strings{
   static const String register = '建立档案';
 
   static const String leaveAppQuestion = '是否确定离开APP?';
-  static const String leavingAlertQuestion = '数据尚未储存\n是否确定离开';
-  static const String logoutAlertQuestion = '是否确定注销';
+  static const String leavingAlertQuestion = '数据尚未储存\n是否确定离开?';
+  static const String logoutAlertQuestion = '是否确定注销?';
+  static const String backAlertQuestion = '是否确定返回?';
+  static const String backHomeAlertQuestion = '返回主页?';
   static const String slit_AlertQuestion = '注意事项:';
   static const String cancel = '取消';
   static const String confirm = '确认';
@@ -16,6 +18,9 @@ class Strings{
   static const String loginname = '登录名称';
   static const String loginpassword = '密码';
   static const String loginbutton = '登录';
+
+  static const String successLoginPart1 = '欢迎';
+  static const String successLoginPart2 = ', 您登录成功';
 
   static const String homePage = '主頁';
 

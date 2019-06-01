@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Constant.dart';
 import 'Functions.dart';
+import 'string.dart';
 
 /// Customize app bar with four components:
 /// 1. back arrow button (for back to previous page)
@@ -54,7 +55,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     Widget homeButton = IconButton(
       icon: const Icon(Icons.home),
       onPressed: (){
-        Functions.backHome(context);
+        Functions.onBackPressedAlert(
+            context,
+            Functions.backHome,
+            Strings.backHomeAlertQuestion
+        );
       },
       iconSize: preferredSize.height * 0.8,
     );
@@ -63,7 +68,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     Widget logoutButton = IconButton(
       icon: const Icon(Icons.exit_to_app),
       onPressed: (){
-        Functions.logout(context);
+        Functions.onBackPressedAlert(
+            context,
+            Functions.logout,
+            Strings.logoutAlertQuestion
+        );
       },
       iconSize: preferredSize.height * 0.8,
     );
@@ -76,14 +85,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
       automaticallyImplyLeading: false,
 
-      /// back arrow icon
+      /// 1. back arrow icon, show only if the boolean is true
       leading: (showBackButton)
           ? backButton
           : (!showHomeButton && !showLogoutButton) ? null : SizedBox.fromSize(size: preferredSize * 0.8,),
 
       /// app bar title, set container to make it vertically centered
       title: Container(
-        height: MediaQuery.of(context).padding.top,
+        height: preferredSize.height,
         child: Center(
           child: Text(title,
             style: TextStyle(fontSize: Constants.appBarTitleFontSize),
@@ -91,7 +100,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
         ),
       ),
 
-      /// home button and logout button
+      /// home button and logout button, to show the buttons or not, see above "consider if" part
       actions: action,
     );
   }
