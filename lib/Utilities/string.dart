@@ -43,6 +43,7 @@ class Strings{
   static const String vision_bestEyeSight = '最佳矫正视力';
 
   static const String successRecord = '成功纪录';
+  static const String submitting = '递交中';
 
   static const String opto_diopter = '散瞳前屈光度';
   static const String opto_astigmatism = '散瞳前散光度';

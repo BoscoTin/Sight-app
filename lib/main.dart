@@ -4,6 +4,7 @@ import 'homepage.dart';
 import 'UserSearch.dart';
 import 'testPages/VisionOptometry.dart';
 import 'testPages/SlitLamp.dart';
+import 'testPages/Register.dart';
 import 'package:myapp/PatientData.dart';
 
 /// main class of the whole app, defines the theme data here
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color(0xFFdaecf7),
         textSelectionColor: Colors.black87,
         disabledColor: Colors.white,
+        hintColor: Colors.indigoAccent,
         buttonColor: Colors.grey,
       ),
 
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/visionOptometry': (context) => VisionOptometry(),
         '/slitLamp': (context) => SlitLamp(),
         '/reviewProfile': (context) => PatientData(),
+        '/register': (context) => Register(),
       },
     );
   }

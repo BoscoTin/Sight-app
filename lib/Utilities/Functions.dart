@@ -6,7 +6,7 @@ class Functions{
   /// generic functions for showing pop-up alerts
   /// parameter:
   /// - message: what to pop-up with the user
-  static Future<bool> showAlert(BuildContext context, String message){
+  static Future<bool> showAlert(BuildContext context, String message, void Function(BuildContext) action){
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -14,7 +14,10 @@ class Functions{
           actions: <Widget>[
             FlatButton(
               child: Text(Strings.confirm),
-              onPressed: (){ Navigator.of(context).pop(true); },
+              onPressed: (){
+                Navigator.of(context).pop(true);
+                action(context);
+                },
             ),
           ],
         )
@@ -71,4 +74,7 @@ class Functions{
   static void Function(BuildContext) backPage = (BuildContext context){
     Navigator.pop(context);
   };
+
+  /// function variable for doing nothing
+  static void Function(BuildContext) nothing = (BuildContext context){};
 }

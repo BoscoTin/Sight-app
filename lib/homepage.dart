@@ -101,7 +101,7 @@ class HomePage extends StatelessWidget{
             ///  2. Register button
             GestureDetector(
               onTap: (){
-                // TODO: push to register page
+                Navigator.pushNamed(context, '/register');
               },
 
               child: Center(

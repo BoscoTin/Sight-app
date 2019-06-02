@@ -195,7 +195,7 @@ class _UserSearchState extends State<UserSearch>{
                     });
                   } else{
                     // TODO: search patient name and users choose which one
-                    Functions.showAlert(context, Strings.fileNotExist);
+                    Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
                     /// set back state of the button
                     setState(() {
                       widget.progress = Strings.searchButton;
