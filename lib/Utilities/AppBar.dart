@@ -22,6 +22,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   final bool showHomeButton;
   final bool showLogoutButton;
 
+  // show in bottom area
+  final Widget bottomShowing;
+
   // receive back press function
   final Future<bool> Function(BuildContext) backPressed;
 
@@ -33,8 +36,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     @required this.showHomeButton,
     @required this.showLogoutButton,
     @required this.backPressed,
+    @required this.bottomShowing
   }) :
-        preferredSize = const Size.fromHeight(Constants.appBarPreferredSize),
+        preferredSize = (bottomShowing == null) ? const Size.fromHeight(Constants.appBarPreferredSize) : const Size.fromHeight(Constants.appBarPreferredSize + Constants.appBarBottomSize),
         super(key : key);
 
 
@@ -48,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
       onPressed: (){
         backPressed(context);
       },
-      iconSize: preferredSize.height * 0.8,
+      iconSize: Constants.appBarPreferredSize * 0.8,
     );
 
     /// variable of home button
@@ -61,7 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
             Strings.backHomeAlertQuestion
         );
       },
-      iconSize: preferredSize.height * 0.8,
+      iconSize: Constants.appBarPreferredSize * 0.8,
     );
 
     /// variable of logout button
@@ -74,7 +78,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
             Strings.logoutAlertQuestion
         );
       },
-      iconSize: preferredSize.height * 0.8,
+      iconSize: Constants.appBarPreferredSize * 0.8,
     );
 
     /// consider if logout and home button need to show
@@ -88,7 +92,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
       /// 1. back arrow icon, show only if the boolean is true
       leading: (showBackButton)
           ? backButton
-          : (!showHomeButton && !showLogoutButton) ? null : SizedBox.fromSize(size: preferredSize * 0.8,),
+          : (!showHomeButton && !showLogoutButton) ? null : SizedBox(height: Constants.appBarPreferredSize * 0.8,),
 
       /// app bar title, set container to make it vertically centered
       title: Container(
@@ -102,6 +106,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
 
       /// home button and logout button, to show the buttons or not, see above "consider if" part
       actions: action,
+
+      /// what to show in bottom area, default is null
+      bottom: bottomShowing,
     );
   }
 

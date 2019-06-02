@@ -81,6 +81,7 @@ class HomePage extends StatelessWidget{
           showHomeButton: false,
           showLogoutButton: true,
           backPressed: backPressed,
+          bottomShowing: null,
         ),
 
         body: ListView(

@@ -13,7 +13,9 @@ class Strings{
   static const String backHomeAlertQuestion = '返回主页?';
   static const String slit_AlertQuestion = '注意事项:';
   static const String fileNotExist = '档案不存在\n请重新输入';
+  static const String cannotSubmit = '无法递交\n请重新输入';
 
+  static const String typeHere = '请在此输入';
   static const String cancel = '取消';
   static const String confirm = '确认';
 
@@ -32,7 +34,7 @@ class Strings{
   static const String searchButton = '搜寻';
   static const String searching = '搜寻中, 请稍等';
 
-  static const String patientIDTyping = '學生编号: ';
+  static const String patientIDTyping = '學生姓名: ';
   static const String profileIDTyping= '档案编号: ';
   static const String right = '右';
   static const String left = '左';

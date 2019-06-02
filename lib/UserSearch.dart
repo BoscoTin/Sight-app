@@ -8,7 +8,9 @@ import 'dart:async';
 import 'package:myapp/Model/BasicInfo.dart';
 
 class UserSearch extends StatefulWidget{
+  // submit to the page navigate to, showing the test that the user want to run
   String test;
+  // submitting progress, default is confirm button
   String progress;
 
   /*
@@ -63,6 +65,7 @@ class _UserSearchState extends State<UserSearch>{
           showHomeButton: true,
           showLogoutButton: true,
           backPressed: backPressed,
+          bottomShowing: null,
         ),
 
         body: GestureDetector(

@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage>{
             showHomeButton: false,
             showLogoutButton: false,
             backPressed: backPressed,
+            bottomShowing: null,
           ),
 
           body: Container(

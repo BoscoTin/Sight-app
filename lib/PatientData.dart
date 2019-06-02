@@ -31,11 +31,12 @@ class _PatientState extends State<PatientData>{
 
       child: Scaffold(
         appBar: CustomAppBar(
-            title: widget.test,
-            showBackButton: true,
-            showHomeButton: true,
-            showLogoutButton: true,
-            backPressed: backPressed
+          title: widget.test,
+          showBackButton: true,
+          showHomeButton: true,
+          showLogoutButton: true,
+          backPressed: backPressed,
+          bottomShowing: null,
         ),
 
         body: Scaffold(

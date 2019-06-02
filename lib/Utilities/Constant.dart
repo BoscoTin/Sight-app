@@ -1,6 +1,8 @@
 class Constants{
   static const double appBarTitleFontSize = 25.0;
   static const double appBarPreferredSize = 54.0;
+  static const double appBarBottomSize = 90.0;
+  static const double appBarBottomFontSize = 18.0;
 
   static const double labelTextSize = 20.0;
   static const double boxBorderRadius = 9.0;

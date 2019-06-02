@@ -8,11 +8,10 @@ import 'dart:async';
 import 'package:myapp/Model/PatientInfo.dart';
 
 class Register extends StatefulWidget{
-  List<String> registeredUser;
+  // show text in the confirm button
   String progress;
 
   Register({Key key}) :
-        registeredUser = [],
         progress = Strings.confirm,
         super(key:key);
 
@@ -21,7 +20,6 @@ class Register extends StatefulWidget{
 }
 
 class _RegisterState extends State<Register>{
-
   // textfield controllers
   TextEditingController studentNameController;
   TextEditingController studentIDController;
@@ -33,7 +31,7 @@ class _RegisterState extends State<Register>{
   Future<bool> Function(BuildContext) backPressed = (BuildContext context) => Functions.onBackPressedAlert(
     context,
     Functions.backPage,
-    Strings.backAlertQuestion,
+    Strings.leavingAlertQuestion,
   );
 
   // Construct
@@ -49,219 +47,220 @@ class _RegisterState extends State<Register>{
   @override
   Widget build(BuildContext context) {
 
-    return GestureDetector(
-      /// dismissing keyboard
-      onTap: (){ FocusScope.of(context).requestFocus(new FocusNode()); },
+    return WillPopScope(
+      onWillPop: () => backPressed(context),
+      child: GestureDetector(
+        /// dismissing keyboard
+        onTap: (){ FocusScope.of(context).requestFocus(new FocusNode()); },
 
-      child: Scaffold(
-        appBar: CustomAppBar(
+        child: Scaffold(
+          appBar: CustomAppBar(
             title: Strings.register,
             showBackButton: true,
             showHomeButton: true,
             showLogoutButton: true,
-            backPressed: backPressed
-        ),
-
-        body: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          backgroundColor: Theme.of(context).backgroundColor,
-
-          body: ListView(
-            padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 40.0),
-            children: <Widget>[
-              /// student name tile
-              Card(
-                color: Theme.of(context).disabledColor,
-                child: ListTile(
-                  leading: Text( Strings.studentName,
-                    style: TextStyle(
-                        fontSize: Constants.normalFontSize
-                    ),
-                  ),
-                  title: Container(
-                      // TODO color: Theme.of(context).disabledColor,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
-                      ),
-
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        controller: studentNameController,
-                        // Set the keyboard
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: Constants.normalFontSize),
-                      ),
-                  ),
-                ),
-              ),
-
-              /// student ID tile
-              Card(
-                color: Theme.of(context).disabledColor,
-                child: ListTile(
-                  leading: Text( Strings.studentNumber,
-                    style: TextStyle(
-                        fontSize: Constants.normalFontSize
-                    ),
-                  ),
-                  title: Container(
-                      // TODO color: Theme.of(context).disabledColor,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
-                      ),
-
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        controller: studentIDController,
-                        // Set the keyboard
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: Constants.normalFontSize),
-                      ),
-                  ),
-                ),
-              ),
-
-              /// student sex tile
-              Card(
-                color: Theme.of(context).disabledColor,
-                child: ListTile(
-                  leading: Text( Strings.studentSex,
-                    style: TextStyle(
-                        fontSize: Constants.normalFontSize
-                    ),
-                  ),
-
-                  title: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: (){
-                              if(studentSex == Strings.male){
-                                studentSex = "";
-                              }
-                              else studentSex = Strings.male;
-
-                              setState(() {});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: (studentSex == Strings.male) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
-                              ),
-                              child: Center(child: Text(Strings.male,
-                                style: TextStyle(fontSize: Constants.normalFontSize),
-                                textAlign: TextAlign.center,
-                              ),),
-                            ),
-                          ),
-                        ),
-
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: (){
-                              if(studentSex == Strings.female){
-                                studentSex = "";
-                              }
-                              else studentSex = Strings.female;
-
-                              setState(() {});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: (studentSex == Strings.female) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
-                              ),
-
-                              child:  Center(child: Text(Strings.female,
-                                style: TextStyle(fontSize: Constants.normalFontSize),
-                                textAlign: TextAlign.center,
-                              ),),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              /// Textfield for that info
-              Card(
-                color: Theme.of(context).disabledColor,
-                child: ListTile(
-                  leading: Text( Strings.studentSex,
-                    style: TextStyle(
-                        fontSize: Constants.normalFontSize
-                    ),
-                  ),
-
-                  title: GestureDetector(
-                    child: Text(
-                      DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: Constants.normalFontSize),
-                    ),
-                    onTap: () => _selectDate(context),
-                  ),
-                ),
-              ),
-
-              /// CONFIRM BUTTON
-              GestureDetector(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: MediaQuery.of(context).size.width * 0.2,
-
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).buttonColor,
-                    borderRadius: BorderRadius.circular(Constants.boxBorderRadius),
-                  ),
-
-                  child: Center(
-                    child: Text(widget.progress,
-                      style: TextStyle(
-                        color: Theme.of(context).textSelectionColor,
-                        fontSize: Constants.normalFontSize,
-                      ),
-                    ),
-                  ),
-                ),
-
-                /// submit data
-                onTap: () async{
-                  setState(() {
-                    widget.progress = Strings.submitting;
-                  });
-
-                  PatientInfo newPatientInfo = new PatientInfo(
-                      studentName: studentNameController.text,
-                      studentNumber: studentIDController.text,
-                      studentBirth: DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
-                      studentSex: studentSex
-                  );
-                  PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap());
-
-                  // Write to check-record database
-                  PatientID newPatientID = new PatientID(
-                      patient_id: studentIDController.text
-                  );
-                  PatientID patientid = await createPatientID(newPatientID.toMap());
-
-                  Functions.showAlert(context, Strings.successRecord, Functions.backPage);
-                },
-              ),
-            ],
+            backPressed: backPressed,
+            bottomShowing: null,
           ),
 
+          body: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Theme.of(context).backgroundColor,
+
+            body: ListView(
+              padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 40.0),
+              children: <Widget>[
+                /// student name tile
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.studentName,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      controller: studentNameController,
+                      // Set the keyboard
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: Constants.normalFontSize),
+                    ),
+                  ),
+                ),
+
+                /// student ID tile
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.studentNumber,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      controller: studentIDController,
+                      // Set the keyboard
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: Constants.normalFontSize),
+
+                    ),
+                  ),
+                ),
+
+                /// student sex tile
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.studentSex,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+
+                    title: Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                if(studentSex == Strings.male){
+                                  studentSex = "";
+                                }
+                                else studentSex = Strings.male;
+
+                                setState(() {});
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: (studentSex == Strings.male) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
+                                ),
+                                child: Center(child: Text(Strings.male,
+                                  style: TextStyle(fontSize: Constants.normalFontSize),
+                                  textAlign: TextAlign.center,
+                                ),),
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                if(studentSex == Strings.female){
+                                  studentSex = "";
+                                }
+                                else studentSex = Strings.female;
+
+                                setState(() {});
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: (studentSex == Strings.female) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
+                                ),
+
+                                child:  Center(child: Text(Strings.female,
+                                  style: TextStyle(fontSize: Constants.normalFontSize),
+                                  textAlign: TextAlign.center,
+                                ),),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                /// Textfield for that info
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.studentSex,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+
+                    title: GestureDetector(
+                      child: Text(
+                        DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: Constants.normalFontSize),
+                      ),
+                      onTap: () => _selectDate(context),
+                    ),
+                  ),
+                ),
+
+                /// CONFIRM BUTTON
+                GestureDetector(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.2,
+
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: BorderRadius.circular(Constants.boxBorderRadius),
+                    ),
+
+                    child: Center(
+                      child: Text(widget.progress,
+                        style: TextStyle(
+                          color: Theme.of(context).textSelectionColor,
+                          fontSize: Constants.normalFontSize,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  /// submit data
+                  onTap: () async{
+                    setState(() {
+                      widget.progress = Strings.submitting;
+                    });
+                    PatientInfo newPatientInfo = new PatientInfo(
+                        studentName: studentNameController.text,
+                        studentNumber: studentIDController.text,
+                        studentBirth: DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
+                        studentSex: studentSex
+                    );
+                    PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap());
+
+                    // Write to check-record database
+                    PatientID newPatientID = new PatientID(
+                        patient_id: studentIDController.text
+                    );
+                    PatientID patientid = await createPatientID(newPatientID.toMap());
+
+                    // Notice the user that the patient has been added
+                    Functions.showAlert(context, Strings.successRecord + '\n' + Strings.profileID + ' ' + patientid.patient_id, Functions.nothing);
+
+                    // clear screen and restore to default
+                    setState(() {
+                      studentIDController.text = '';
+                      studentNameController.text = '';
+                      studentSex = '';
+                      studentDateOfBirth = DateTime.now();
+                      widget.progress = Strings.confirm;
+                    });
+                  },
+                ),
+
+              ],
+            ),
+
+          ),
         ),
       ),
     );
