@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'homepage.dart';
 import 'UserSearch.dart';
+import 'testPages/VisionOptometry.dart';
+import 'testPages/SlitLamp.dart';
+import 'package:myapp/PatientData.dart';
 
 /// main class of the whole app, defines the theme data here
 
@@ -29,6 +32,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         '/home': (context) => HomePage(),
         '/UserSearch': (context) => UserSearch(),
+        '/visionOptometry': (context) => VisionOptometry(),
+        '/slitLamp': (context) => SlitLamp(),
+        '/reviewProfile': (context) => PatientData(),
       },
     );
   }

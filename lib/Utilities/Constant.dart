@@ -7,4 +7,7 @@ class Constants{
 
   static const double headingFontSize = 40.0;
   static const double normalFontSize = 20.0;
+
+  static const URL_STU = 'https://api.sightseeing.projects.sight.ust.hk/students';
+  static const URL_RECORD = 'https://api.sightseeing.projects.sight.ust.hk/check-record';
 }

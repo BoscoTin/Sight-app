@@ -4,8 +4,12 @@ import 'Utilities/Functions.dart';
 import 'Utilities/AppBar.dart';
 import 'Utilities/string.dart';
 
+import 'dart:async';
+import 'package:myapp/Model/BasicInfo.dart';
+
 class UserSearch extends StatefulWidget{
   String test;
+  String progress;
 
   /*
   @parameter
@@ -13,6 +17,7 @@ class UserSearch extends StatefulWidget{
   */
   UserSearch({Key key}) :
         test = "",
+        progress = Strings.searchButton,
         super(key:key);
 
   @override
@@ -67,9 +72,37 @@ class _UserSearchState extends State<UserSearch>{
           },
 
           child: ListView(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 40.0),
+            padding: const EdgeInsets.only(left: 50.0, right: 50.0, top: 40.0, bottom: 40.0),
 
             children: <Widget>[
+              /// THE PROFILE ID TEXT FIELD
+              Container(
+                padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 0.0, bottom: 0.0),
+                width: MediaQuery.of(context).size.width *2 / 3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(Constants.boxBorderRadius)
+                  ),
+                  color: Theme.of(context).disabledColor,
+                ),
+
+                child: TextField(
+                  controller: fileNumberController,
+                  decoration: InputDecoration(
+                      hintText: Strings.profileID,
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).buttonColor,
+                      ),
+                      border: InputBorder.none
+                  ),
+                  style: TextStyle(
+                    color: Theme.of(context).textSelectionColor,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
+
               /// THE PATIENT NAME INPUT FIELD
               Container(
                 padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 0.0, bottom: 0.0),
@@ -103,34 +136,6 @@ class _UserSearchState extends State<UserSearch>{
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
 
-              /// THE PROFILE ID TEXT FIELD
-              Container(
-                padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 0.0, bottom: 0.0),
-                width: MediaQuery.of(context).size.width *2 / 3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(Constants.boxBorderRadius)
-                  ),
-                  color: Theme.of(context).disabledColor,
-                ),
-
-                child: TextField(
-                  controller: fileNumberController,
-                  decoration: InputDecoration(
-                      hintText: Strings.profileID,
-                      hintStyle: TextStyle(
-                        color: Theme.of(context).buttonColor,
-                      ),
-                      border: InputBorder.none
-                  ),
-                  style: TextStyle(
-                    color: Theme.of(context).textSelectionColor,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
-
               /// CONFIRM BUTTON
               GestureDetector(
                 child: Container(
@@ -143,7 +148,7 @@ class _UserSearchState extends State<UserSearch>{
                   ),
 
                   child: Center(
-                    child: Text(Strings.loginbutton,
+                    child: Text(widget.progress,
                       style: TextStyle(
                         color: Theme.of(context).textSelectionColor,
                         fontSize: Constants.normalFontSize,
@@ -153,8 +158,49 @@ class _UserSearchState extends State<UserSearch>{
                 ),
 
                 /// pop to desired page and pass the identification detail to home page
-                onTap: (){
-                  // TODO: 1. check if the detail exists, 2. pop to desired page with arguments pre-set (both details)
+                onTap: () async{
+                  setState(() {
+                    widget.progress = Strings.searching;
+                  });
+
+                  String patientID = fileNumberController.text;
+                  String patientName = await isIDExist(patientID);
+
+                  if(patientName != ''){
+                    /// set up navigating route
+                    String route;
+                    switch(widget.test){
+                      case Strings.visionTest:
+                      case Strings.optometry:
+                        route = '/visionOptometry';
+                        break;
+                      case Strings.slitLamp:
+                        route = '/slitLamp';
+                        break;
+                      case Strings.reviewingProfile:
+                        route = '/reviewProfile';
+                        break;
+                      default:
+                        route = '';
+                        break;
+                    }
+
+                    /// set up arguments and push to desired route
+                    List<String> args = [widget.test, patientID, patientName];
+                    Navigator.pushNamed(context, route, arguments: args);
+
+                    /// set back state of the button
+                    setState(() {
+                      widget.progress = Strings.searchButton;
+                    });
+                  } else{
+                    // TODO: search patient name and users choose which one
+                    Functions.showAlert(context, Strings.fileNotExist);
+                    /// set back state of the button
+                    setState(() {
+                      widget.progress = Strings.searchButton;
+                    });
+                  }
                 },
               ),
             ],

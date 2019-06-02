@@ -3,6 +3,23 @@ import 'string.dart';
 import 'package:flutter/services.dart';
 
 class Functions{
+  /// generic functions for showing pop-up alerts
+  /// parameter:
+  /// - message: what to pop-up with the user
+  static Future<bool> showAlert(BuildContext context, String message){
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(Strings.confirm),
+              onPressed: (){ Navigator.of(context).pop(true); },
+            ),
+          ],
+        )
+    )?? false;
+  }
 
   /// generic functions for backPress option used in each page
   /// parameter:

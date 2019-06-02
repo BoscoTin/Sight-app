@@ -12,6 +12,8 @@ class Strings{
   static const String backAlertQuestion = '是否确定返回?';
   static const String backHomeAlertQuestion = '返回主页?';
   static const String slit_AlertQuestion = '注意事项:';
+  static const String fileNotExist = '档案不存在\n请重新输入';
+
   static const String cancel = '取消';
   static const String confirm = '确认';
 
@@ -22,14 +24,13 @@ class Strings{
   static const String successLoginPart1 = '欢迎';
   static const String successLoginPart2 = ', 您登录成功';
 
-  static const String homePage = '主頁';
-
+  static const String homePage = '主页';
   static const String searchUsers = '档案搜寻';
-  static const String mainpageButton = '主页';
   static const String logoutButton = '注销';
   static const String patientName = '姓名';
   static const String profileID= '档案编号';
   static const String searchButton = '搜寻';
+  static const String searching = '搜寻中, 请稍等';
 
   static const String patientIDTyping = '學生编号: ';
   static const String profileIDTyping= '档案编号: ';

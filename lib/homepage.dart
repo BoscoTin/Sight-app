@@ -4,18 +4,12 @@ import 'Utilities/AppBar.dart';
 import 'Utilities/Functions.dart';
 import 'Utilities/Constant.dart';
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatelessWidget{
   String id;
 
   HomePage({Key key}) :
         id = null,
         super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage>{
 
   /// define back press action
   Future<bool> Function(BuildContext) backPressed = (BuildContext context) => Functions.onBackPressedAlert(
@@ -26,7 +20,7 @@ class _HomePageState extends State<HomePage>{
 
   /// Function to unify the layout of the buttons
   /// provide tap action with assets image path to build the button
-  GestureDetector customizeIconButton(Function() tapAction, String imagePath, String hintText, double heightRatio, double widthRatio){
+  GestureDetector customizeIconButton(BuildContext context, Function() tapAction, String imagePath, String hintText, double heightRatio, double widthRatio){
     return GestureDetector(
       onTap: tapAction,
 
@@ -49,8 +43,8 @@ class _HomePageState extends State<HomePage>{
               width: MediaQuery.of(context).size.width * widthRatio / 7 * 4,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.fill
+                    image: AssetImage(imagePath),
+                    fit: BoxFit.fill
                 ),
               ),
             ),
@@ -58,8 +52,8 @@ class _HomePageState extends State<HomePage>{
             // hint text
             Text( hintText,
               style: TextStyle(
-                fontSize: Constants.normalFontSize,
-                color: Theme.of(context).textSelectionColor
+                  fontSize: Constants.normalFontSize,
+                  color: Theme.of(context).textSelectionColor
               ),
             ),
           ],
@@ -71,8 +65,8 @@ class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
     /// receive parameters from last page
-    if(widget.id == null)
-      widget.id = ModalRoute.of(context).settings.arguments;
+    if(id == null)
+      id = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
       /// set the back action
@@ -94,7 +88,7 @@ class _HomePageState extends State<HomePage>{
 
           children: <Widget>[
             ///  1. welcome message, for confirming the correct user has been log in
-            Text( Strings.successLoginPart1 + widget.id + Strings.successLoginPart2,
+            Text( Strings.successLoginPart1 + id + Strings.successLoginPart2,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: Constants.normalFontSize,
@@ -143,9 +137,9 @@ class _HomePageState extends State<HomePage>{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                customizeIconButton( (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.visionTest); },
+                customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.visionTest); },
                     'assets/images/Vision.png', Strings.visionTest, 0.21, 0.35),
-                customizeIconButton( (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.optometry); },
+                customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.optometry); },
                     'assets/images/Optometry.png', Strings.optometry, 0.21, 0.35),
               ],
             ),
@@ -157,9 +151,9 @@ class _HomePageState extends State<HomePage>{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                customizeIconButton( (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.slitLamp); },
+                customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.slitLamp); },
                     'assets/images/SlitLamp.png', Strings.slitLamp, 0.21, 0.35),
-                customizeIconButton( (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.reviewingProfile); },
+                customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.reviewingProfile); },
                     'assets/images/Review.png', Strings.reviewingProfile, 0.21, 0.35),
               ],
             ),
