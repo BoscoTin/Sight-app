@@ -189,7 +189,7 @@ class _UserSearchState extends State<UserSearch>{
                     }
 
                     /// set up arguments and push to desired route
-                    List<String> args = [widget.test, patientID, patientName];
+                    List<String> args = [widget.test, patientID, patientName, 'true'];
                     Navigator.pushNamed(context, route, arguments: args);
 
                     /// set back state of the button

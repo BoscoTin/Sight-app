@@ -204,8 +204,15 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                       );
                       SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap());
 
-                      /// finish alert here
-                      Functions.showAlert(context, Strings.successRecord, Functions.backPage);
+                      /// finish alert here, press confirm to
+                      Functions.showAlert(context,
+                          Strings.successRecord,
+                              (BuildContext context){
+                                Navigator.of(context).pop();
+                                Navigator.pushNamed(context, '/reviewProfile',
+                                  arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
+                              );
+                      });
 
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => Consultation(profileID: widget.profileID, patientName: widget.patientName,)));
 
