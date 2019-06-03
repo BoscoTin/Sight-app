@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/Utilities/Functions.dart';
 import 'package:myapp/Utilities/string.dart';
 import 'package:myapp/Utilities/AppBar.dart';
+import 'package:myapp/Utilities/bottomForTestPages.dart';
 import 'package:myapp/Utilities/Constant.dart';
 import 'package:myapp/Model/VisionTest.dart';
 import 'package:myapp/Model/OptTest.dart';
@@ -58,12 +59,11 @@ class _VisionOptometryState extends State<VisionOptometry>{
       widget.test = args[0];
       widget.profileID = args[1];
       widget.patientName = args[2];
+      widget.isArgsReceived = true;
     }
 
     /// State the corresponding checking of each values represent inside the text Data list
-    testList = (widget.test == Strings.visionTest) ?
-    [Strings.vision_livingEyeSight, Strings.vision_bareEyeSight, Strings.vision_eyeGlasses, Strings.vision_bestEyeSight]
-        :[Strings.opto_diopter, Strings.opto_astigmatism, Strings.opto_astigmatismaxis];
+    testList = (widget.test == Strings.visionTest) ? Constants.visionTest : Constants.optometry;
 
     return WillPopScope(
       onWillPop: () => backPressed(context),
@@ -82,52 +82,11 @@ class _VisionOptometryState extends State<VisionOptometry>{
             backPressed: backPressed,
 
             /// TO SHOW PATIENT NAME AND ITS ID
-            bottomShowing: PreferredSize(
-              preferredSize: Size.fromHeight(Constants.appBarBottomFontSize),
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    /// SHOWING PROFILE ID
-                    Container(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor,
-                          borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
-                      ),
-
-                      child: Text(Strings.profileIDTyping + widget.profileID,
-                        style: TextStyle(
-                          fontSize: Constants.appBarBottomFontSize,
-                        ),
-                      ),
-                    ),
-
-                    /// SHOWING PATIENT NAME
-                    Container(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor,
-                          borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
-                      ),
-
-                      child: Text(Strings.patientIDTyping + widget.patientName,
-                        style: TextStyle(
-                          fontSize: Constants.appBarBottomFontSize,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
+            bottomShowing: CustomBottomArea(patientName: widget.patientName, profileID: widget.profileID),
           ),
 
           body: ListView(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
             // SEE FUNCTION BELOW
             children: generateLayout(),
           ),
@@ -137,7 +96,7 @@ class _VisionOptometryState extends State<VisionOptometry>{
   }
 
   /// DEFINE ONE CONTAINER OF THE TEST ITEM AND ITS INPUT FIELD
-  Card customInputRow(String testItem, bool isRight){
+  Widget customInputRow(String testItem, bool isRight){
     if(isRight && rightFieldControllers[testItem] == null){
       rightFieldControllers[testItem] = new TextEditingController();
     }
@@ -145,28 +104,32 @@ class _VisionOptometryState extends State<VisionOptometry>{
       leftFieldControllers[testItem] = new TextEditingController();
     }
 
-    return Card(
-      color: Theme.of(context).disabledColor,
-      child: ListTile(
-        leading: Text( testItem,
-          style: TextStyle(
-              fontSize: Constants.normalFontSize
-          ),
-        ),
-        title: TextField(
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: Strings.typeHere,
-            hintStyle: TextStyle(
-                color: Theme.of(context).buttonColor
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
+
+      child: Card(
+        color: Theme.of(context).disabledColor,
+        child: ListTile(
+          leading: Text( testItem,
+            style: TextStyle(
+                fontSize: Constants.normalFontSize
             ),
           ),
-          controller: (isRight)? rightFieldControllers[testItem] : leftFieldControllers[testItem],
-          keyboardType: TextInputType.numberWithOptions(decimal: true),
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          style: TextStyle(
-              fontSize: Constants.normalFontSize
+          title: TextField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: Strings.typeHere,
+              hintStyle: TextStyle(
+                  color: Theme.of(context).buttonColor
+              ),
+            ),
+            controller: (isRight)? rightFieldControllers[testItem] : leftFieldControllers[testItem],
+            keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: TextStyle(
+                fontSize: Constants.normalFontSize
+            ),
           ),
         ),
       ),
@@ -189,7 +152,7 @@ class _VisionOptometryState extends State<VisionOptometry>{
       widgets.add(customInputRow(s, true));
     }
 
-    widgets.add(SizedBox(height: MediaQuery.of(context).size.height * 0.05,));
+    widgets.add(SizedBox(height: MediaQuery.of(context).size.height * 0.02,));
 
     /// LEFT EYE
     widgets.add(
@@ -203,7 +166,7 @@ class _VisionOptometryState extends State<VisionOptometry>{
       widgets.add(customInputRow(s, false));
     }
 
-    widgets.add(SizedBox(height: MediaQuery.of(context).size.height * 0.05,));
+    widgets.add(SizedBox(height: MediaQuery.of(context).size.height * 0.02,));
 
     /// CONFIRM BUTTON
     widgets.add(
@@ -229,6 +192,10 @@ class _VisionOptometryState extends State<VisionOptometry>{
 
           /// submit data
           onTap: () async{
+            setState(() {
+              widget.progress = Strings.submitting;
+            });
+
             if (widget.test == Strings.visionTest){
               // Construct the visionTest object
               VisionTest newVisionTest = new VisionTest(
@@ -247,8 +214,13 @@ class _VisionOptometryState extends State<VisionOptometry>{
 
               // TODO: show the following alert when the data is successfully submitted to the server
               Functions.showAlert(context, Strings.successRecord, Functions.backPage);
-              // TODO: show the following alert when data cannot be submitted
+              /*
+              // TODO: show the following alert and set state when data cannot be submitted
               Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
+              */
+              setState(() {
+                widget.progress = Strings.confirm;
+              });
             }
             else{
               OptTest newOptTest = new OptTest
@@ -265,8 +237,13 @@ class _VisionOptometryState extends State<VisionOptometry>{
 
               // TODO: show the following alert when the data is successfully submitted to the server
               Functions.showAlert(context, Strings.successRecord, Functions.backPage);
-              // TODO: show the following alert when data cannot be submitted
+              /*
+              // TODO: show the following alert and set state when data cannot be submitted
               Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
+              */
+              setState(() {
+                widget.progress = Strings.confirm;
+              });
             }
           },
         )

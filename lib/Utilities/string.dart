@@ -13,6 +13,7 @@ class Strings{
   static const String backHomeAlertQuestion = '返回主页?';
   static const String slit_AlertQuestion = '注意事项:';
   static const String fileNotExist = '档案不存在\n请重新输入';
+  static const String submit = '请递交';
   static const String cannotSubmit = '无法递交\n请重新输入';
 
   static const String typeHere = '请在此输入';
