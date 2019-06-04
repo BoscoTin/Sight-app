@@ -192,6 +192,8 @@ class _VisionOptometryState extends State<VisionOptometry>{
 
           /// submit data
           onTap: () async{
+            // TODO: VISION OPTOMETRY SUBMIT BUTTON
+
             setState(() {
               widget.progress = Strings.submitting;
             });
@@ -212,10 +214,10 @@ class _VisionOptometryState extends State<VisionOptometry>{
               // Call the API
               VisionTest newData = await createVisionTest(widget.profileID, body: newVisionTest.toMap());
 
-              // TODO: show the following alert when the data is successfully submitted to the server
+              // show the following alert when the data is successfully submitted to the server
               Functions.showAlert(context, Strings.successRecord, Functions.backPage);
               /*
-              // TODO: show the following alert and set state when data cannot be submitted
+              // show the following alert and set state when data cannot be submitted
               Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
               */
               setState(() {
@@ -235,10 +237,10 @@ class _VisionOptometryState extends State<VisionOptometry>{
               );
               OptTest newData = await createOptTest(widget.profileID, newOptTest.toMap());
 
-              // TODO: show the following alert when the data is successfully submitted to the server
+              // show the following alert when the data is successfully submitted to the server
               Functions.showAlert(context, Strings.successRecord, Functions.backPage);
               /*
-              // TODO: show the following alert and set state when data cannot be submitted
+              // show the following alert and set state when data cannot be submitted
               Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
               */
               setState(() {

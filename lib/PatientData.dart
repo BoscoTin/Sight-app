@@ -118,8 +118,18 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           bottomShowing: null,
         ),
 
+        /// DOTS IN THE BOTTOM, showing which page
+        bottomNavigationBar: PreferredSize(
+            child: Container(
+              height: 30.0,
+              child: Center(
+                child: TabPageSelector(controller: _tabController,),
+              ),
+            ),
+            preferredSize: Size.fromHeight(30.0)
+        ),
+
         body: Container(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
           child: TabBarView(
               controller: _tabController,
               children: <Widget>[
@@ -157,6 +167,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     }
 
     return ListView(
+      padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
       children: list,
     );
   }

@@ -102,25 +102,6 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
           _nextPage(-1);
         }
         else _nextPage(1);
-
-        setState(() {
-          /// title setting
-          switch(_tabController.index){
-            case 0:
-              widget.test = Strings.slitLamp;
-              break;
-            case 1:
-              widget.test = Strings.hirschberg;
-              break;
-            case 2:
-              widget.test = Strings.submit;
-              break;
-
-            default:
-              widget.test = 'Error';
-              break;
-          }
-        });
       },
 
       child: Scaffold(
@@ -136,14 +117,24 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
           bottomShowing: CustomBottomArea(patientName: widget.patientName, profileID: widget.profileID),
         ),
 
-        body: Container(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
+        /// DOTS IN THE BOTTOM, showing which page
+        bottomNavigationBar: PreferredSize(
+            child: Container(
+              height: 30.0,
+              child: Center(
+                child: TabPageSelector(controller: _tabController,),
+              ),
+            ),
+            preferredSize: Size.fromHeight(30.0)
+        ),
 
+        body: Container(
           child: TabBarView(
             controller: _tabController,
               children: <Widget>[
                 /// slit lamp view
                 ListView(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
                   children: <Widget>[
                     ///BUTTON ROWS, TEST ITEMS WITH LEFT EYE AND RIGHT EYE
                     Center(child: Text( Strings.slit_eyelid, style: TextStyle(fontSize: Constants.normalFontSize + 5),),),
@@ -163,6 +154,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
 
                 /// hirschberg view
                 ListView(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
                   children: <Widget>[
                     /// 6. LIST OF TEST ITEMS IN HIRSCHBERG
                     Center(child: Text( Strings.slit_Hirschbergtest, style: TextStyle(fontSize: Constants.normalFontSize + 5),),),
@@ -177,52 +169,10 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                   ],
                 ),
 
-                /// CONFIRM BUTTON
-                Center(child: SizedBox(
-                  height: MediaQuery.of(context).size.height * Constants.columnRatio,
-                  width: MediaQuery.of(context).size.width * 0.4,
-
-                  child: RaisedButton(
-                    onPressed: () async {
-                      setState(() {
-                        widget.progress = Strings.submitting;
-                      });
-
-                      SlitlampTest newslitlampTest = new SlitlampTest(
-                          left_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.left),
-                          right_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.right),
-                          left_slit_cornea: getData(Strings.slit_cornea+Strings.left),
-                          right_slit_cornea: getData(Strings.slit_cornea+Strings.right),
-                          left_slit_eyelid: getData(Strings.slit_eyelid+Strings.left),
-                          right_slit_eyelid: getData(Strings.slit_eyelid+Strings.right),
-                          left_slit_lens: getData(Strings.slit_lens+Strings.left),
-                          right_slit_lens: getData(Strings.slit_lens+Strings.right),
-                          left_slit_Hirschbergtest: getData(Strings.slit_Hirschbergtest+Strings.left),
-                          right_slit_Hirschbergtest: getData(Strings.slit_Hirschbergtest+Strings.right),
-                          slit_exchange: getData(Strings.slit_exchange),
-                          slit_eyeballshivering: getData(Strings.slit_eyeballshivering)
-                      );
-                      SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap());
-
-                      /// finish alert here, press confirm to
-                      Functions.showAlert(context,
-                          Strings.successRecord,
-                              (BuildContext context){
-                                Navigator.of(context).pop();
-                                Navigator.pushNamed(context, '/reviewProfile',
-                                  arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
-                              );
-                      });
-
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => Consultation(profileID: widget.profileID, patientName: widget.patientName,)));
-
-                    },
-                    child: Text(widget.progress,
-                      style: TextStyle(fontSize: Constants.normalFontSize),
-                    ),
-                  ),
-                ),),
-
+                ListView(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
+                  children: thirdTabWidgets(),
+                ),
               ]
           ),
         ),
@@ -231,6 +181,95 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
       ),
     );
   }
+
+  /*
+    Control the layout of third page
+   */
+  List<Widget> thirdTabWidgets(){
+    List<Widget> list = [];
+
+    /// TITLE
+    list.add( Center(child: Text( Strings.slit_otherShow, style: TextStyle(fontSize: Constants.normalFontSize + 5),),),);
+
+    /// SHOWING OTHER VALUE IN THIS PAGE
+    List<String> keys = otherValue.keys.toList();
+    for(String key in keys){
+      list.add(
+        Card(
+          color: Theme.of(context).disabledColor,
+          child: ListTile(
+            leading: Text(key,
+              style: TextStyle(
+                fontSize: Constants.normalFontSize
+              ),
+            ),
+
+            title: Text(otherValue[key],
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: Constants.normalFontSize
+              ),
+            ),
+          ),
+        )
+      );
+    }
+
+    list.add(
+      /// CONFIRM BUTTON
+      Center(child: SizedBox(
+        height: MediaQuery.of(context).size.height * Constants.columnRatio,
+        width: MediaQuery.of(context).size.width * 0.4,
+
+        child: RaisedButton(
+          // TODO: SLIT LAMP SUBMIT BUTTON
+
+          onPressed: () async {
+            setState(() {
+              widget.progress = Strings.submitting;
+            });
+
+            SlitlampTest newslitlampTest = new SlitlampTest(
+                left_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.left),
+                right_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.right),
+                left_slit_cornea: getData(Strings.slit_cornea+Strings.left),
+                right_slit_cornea: getData(Strings.slit_cornea+Strings.right),
+                left_slit_eyelid: getData(Strings.slit_eyelid+Strings.left),
+                right_slit_eyelid: getData(Strings.slit_eyelid+Strings.right),
+                left_slit_lens: getData(Strings.slit_lens+Strings.left),
+                right_slit_lens: getData(Strings.slit_lens+Strings.right),
+                left_slit_Hirschbergtest: getData(Strings.slit_Hirschbergtest+Strings.left),
+                right_slit_Hirschbergtest: getData(Strings.slit_Hirschbergtest+Strings.right),
+                slit_exchange: getData(Strings.slit_exchange),
+                slit_eyeballshivering: getData(Strings.slit_eyeballshivering)
+            );
+            SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap());
+
+            /// finish alert here, press confirm to
+            Functions.showAlert(context,
+                Strings.successRecord,
+                    (BuildContext context){
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/reviewProfile',
+                    arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
+                  );
+                });
+
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => Consultation(profileID: widget.profileID, patientName: widget.patientName,)));
+
+          },
+          child: Text(widget.progress,
+            style: TextStyle(fontSize: Constants.normalFontSize),
+          ),
+        ),
+      ),),
+    );
+
+    return list;
+  }
+
+
+  /// BELOW IS THE SAME WITH OLD SLIP LAMP-----------------------------------------------
 
   // Decide to get data from othervalue or radiovalue
   String getData(String key){

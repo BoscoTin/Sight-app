@@ -4,19 +4,6 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 /*
-  # The function that check if the patientID exists in database
- */
-Future<String> isIDExist(String patientID) async{
-  final response = await http.get('${Constants.URL_STU}?studentNumber=${patientID}', headers: {"Accept": "application/json"});
-
-  if(response.statusCode == 200){
-    BasicInfo info = BasicInfo.fromJson(json.decode(response.body));
-    if(info.name != '') return info.name;
-    else return '';
-  } else return '';
-}
-
-/*
   # The function that will make use of the http.get method to do GET operation
 */
 Future<BasicInfo> getBasicInfo(String patientID) async{

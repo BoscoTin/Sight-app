@@ -162,16 +162,19 @@ class _UserSearchState extends State<UserSearch>{
 
                 /// pop to desired page and pass the identification detail to home page
                 onTap: () async{
+                  // TODO: USER SEARCH SUBMIT BUTTON
+
                   setState(() {
                     widget.progress = Strings.searching;
                   });
 
                   String patientID = fileNumberController.text;
-                  String patientName = await isIDExist(patientID);
+                  BasicInfo info = await getBasicInfo(patientID).timeout(const Duration(seconds: 10), onTimeout: () => null );
+                  String route;
 
-                  if(patientName != ''){
+                  // check if the patient id is null or not
+                  if(info != null){
                     /// set up navigating route
-                    String route;
                     switch(widget.test){
                       case Strings.visionTest:
                       case Strings.optometry:
@@ -189,7 +192,7 @@ class _UserSearchState extends State<UserSearch>{
                     }
 
                     /// set up arguments and push to desired route
-                    List<String> args = [widget.test, patientID, patientName, 'true'];
+                    List<String> args = [widget.test, patientID, info.name, 'true'];
                     Navigator.pushNamed(context, route, arguments: args);
 
                     /// set back state of the button

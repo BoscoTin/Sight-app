@@ -16,6 +16,9 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
+dependency_overrides:
+  image: 2.0.7
+
 dependencies:
   flutter:
     sdk: flutter
@@ -29,6 +32,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios:
+    "assets/launcher/APPLogo.png"
+  image_path_android:
+    "assets/launcher/APPLogo.png"
 
 
 # For information on the generic Dart part of this file, see the

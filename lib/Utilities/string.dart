@@ -60,6 +60,8 @@ class Strings{
   static const String slit_exchange = '交替遮盖检查';
   static const String slit_eyeballshivering= '眼球震颤';
 
+  static const String slit_otherShow = '其他(如有):';
+
   static const String choice_normal = '正常';
   static const String choice_upperLidDrooping = '上睑下垂';
   static const String choice_others = '其他';

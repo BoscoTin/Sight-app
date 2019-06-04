@@ -7,13 +7,14 @@ import 'package:myapp/Utilities/Constant.dart';
 import 'package:myapp/Model/ConsultRecord.dart';
 
 class Consultation extends StatefulWidget{
-
   // judge whether the widget is in viewing mode or submitting mode
   bool isViewing;
   // patient ID
   String profileID;
+  // submitting progress, default is confirm button
+  String progress;
 
-  Consultation({Key key, @required this.isViewing, @required this.profileID}) : super(key : key);
+  Consultation({Key key, @required this.isViewing, @required this.profileID}) : progress = Strings.confirm, super(key : key);
 
   @override
   _ConsultState createState() => _ConsultState();
@@ -60,10 +61,15 @@ class _ConsultState extends State<Consultation>{
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 20.0, bottom: 20.0),
       children: (widget.isViewing) ? viewing() : nonViewing(),
     );
   }
 
+
+  /*
+   Card for building single row of checked data
+   */
   Card oneRow(String info){
     return Card(
       color: Theme.of(context).disabledColor,
@@ -167,6 +173,12 @@ class _ConsultState extends State<Consultation>{
         height: MediaQuery.of(context).size.height * Constants.columnRatio,
         child: RaisedButton(
           onPressed: () async{
+            // TODO: CONSULTATION SUBMIT BUTTON
+
+            setState(() {
+              widget.progress = Strings.submitting;
+            });
+
             ConsultRecord newConsultRecord = new ConsultRecord(
                 problems: getData(Strings.consultation),
                 handle: handleController.text,
@@ -182,7 +194,7 @@ class _ConsultState extends State<Consultation>{
                 Functions.backHome
             );
           },
-          child: Text(Strings.confirm,
+          child: Text(widget.progress,
             style: TextStyle(fontSize: Constants.normalFontSize),
           ),
         ),
