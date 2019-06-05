@@ -163,13 +163,13 @@ class _UserSearchState extends State<UserSearch>{
                 /// pop to desired page and pass the identification detail to home page
                 onTap: () async{
                   // TODO: USER SEARCH SUBMIT BUTTON
-
                   setState(() {
                     widget.progress = Strings.searching;
                   });
 
                   String patientID = fileNumberController.text;
-                  BasicInfo info = await getBasicInfo(patientID).timeout(const Duration(seconds: 10), onTimeout: () => null );
+                  BasicInfo info = await ((patientID != '')?
+                    getBasicInfo(patientID).timeout(const Duration(seconds: 10), onTimeout: () => null ): null);
                   String route;
 
                   // check if the patient id is null or not
@@ -201,11 +201,63 @@ class _UserSearchState extends State<UserSearch>{
                     });
                   } else{
                     // TODO: search patient name and users choose which one
-                    Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
-                    /// set back state of the button
-                    setState(() {
-                      widget.progress = Strings.searchButton;
-                    });
+                    String patientName = patientNameController.text;
+                    if(patientName != ''){
+                      List<BasicInfo> sameNameList = await getSameNameInfos(patientName).timeout(const Duration(seconds: 10), onTimeout: () => null );
+
+                      if(sameNameList != null){
+                        List<String> navigate = await Functions.chooseList(context, sameNameList);
+
+                        if(navigate != null && navigate[0] == 'true'){
+                          switch(widget.test){
+                            case Strings.visionTest:
+                            case Strings.optometry:
+                              route = '/visionOptometry';
+                              break;
+                            case Strings.slitLamp:
+                              route = '/slitLamp';
+                              break;
+                            case Strings.reviewingProfile:
+                              route = '/reviewProfile';
+                              break;
+                            default:
+                              route = '';
+                              break;
+                          }
+
+                          /// set up arguments and push to desired route
+                          List<String> args = [widget.test, navigate[1], patientName, 'true'];
+                          Navigator.pushNamed(context, route, arguments: args);
+
+                          /// set back state of the button
+                          setState(() {
+                            widget.progress = Strings.searchButton;
+                          });
+                        }
+
+                        /// BELOW ARE THE ERRORS
+                        else{
+                          Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
+                          /// set back state of the button
+                          setState(() {
+                            widget.progress = Strings.searchButton;
+                          });
+                        }
+                      }
+                      else{
+                        Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
+                        /// set back state of the button
+                        setState(() {
+                          widget.progress = Strings.searchButton;
+                        });
+                      }
+                    } else {
+                      Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
+                      /// set back state of the button
+                      setState(() {
+                        widget.progress = Strings.searchButton;
+                      });
+                    }
                   }
                 },
               ),

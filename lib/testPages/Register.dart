@@ -82,6 +82,7 @@ class _RegisterState extends State<Register>{
                     title: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        hintText: Strings.typeHere,
                       ),
                       controller: studentNameController,
                       // Set the keyboard
@@ -105,6 +106,7 @@ class _RegisterState extends State<Register>{
                     title: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        hintText: Strings.typeHere,
                       ),
                       controller: studentIDController,
                       // Set the keyboard

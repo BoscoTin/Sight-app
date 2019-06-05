@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'string.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/Model/BasicInfo.dart';
+import 'Constant.dart';
 
 class Functions{
   /// generic functions for showing pop-up alerts
@@ -77,4 +79,55 @@ class Functions{
 
   /// function variable for doing nothing
   static void Function(BuildContext) nothing = (BuildContext context){};
+
+
+  /// function in User Search: make a list for user to choose one
+  static Future<List<String>> chooseList(BuildContext context, List<BasicInfo> infos){
+    List<Widget> widgets = [];
+
+    for(int i = 0; i < infos.length; ++i){
+
+      widgets.add(
+        Container(
+          height: 60,
+
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pop(['true', infos[i].number]);
+            },
+            child: ListTile(
+              leading: Text(infos[i].number,
+                style: TextStyle(
+                    fontSize: Constants.normalFontSize
+                ),
+              ),
+              title: Text(infos[i].name,
+                style: TextStyle(
+                    fontSize: Constants.normalFontSize
+                ),
+              ),
+              subtitle: Text(infos[i].sex + ' ' + infos[i].birth,
+                style: TextStyle(
+                    fontSize: Constants.normalFontSize - 5
+                ),
+              ),
+            ),
+          ),
+        )
+
+      );
+    }
+
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(Strings.searchSameNameAlert,
+          style: TextStyle(
+            fontSize: Constants.normalFontSize + 5
+          ),
+        ),
+        children: widgets,
+      )
+    )?? false;
+  }
 }

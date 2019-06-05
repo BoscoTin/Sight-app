@@ -4,12 +4,19 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<CheckInfo> getCheckInfo(bool isLeft, String patientID) async{
-  final response = await http.get('${Constants.URL_RECORD}?patient_id=${patientID}', headers: {"Accept": "application/json"});
 
-  if (response.statusCode == 200) {
-    return CheckInfo.fromJson(json.decode(response.body), isLeft);
-  } else {
-    throw Exception('Failed to load post');
+  try {
+    final response = await http.get(
+        '${Constants.URL_RECORD}?patient_id=${patientID}',
+        headers: {"Accept": "application/json"});
+
+    if (response.statusCode == 200) {
+      return CheckInfo.fromJson(json.decode(response.body), isLeft);
+    } else {
+      return null;
+    }
+  } catch (e){
+    return null;
   }
 }
 

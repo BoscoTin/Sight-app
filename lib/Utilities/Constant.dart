@@ -17,7 +17,7 @@ class Constants{
   static const int rowCount = 3;
 
   static const slitLampTabNumber = 4;
-  static const consultationTabNumber = 4;
+  static const consultationTabNumber = 5;
 
   /// FOR BUILDING TESTPAGES
   static const List<String> visionTest = [Strings.vision_livingEyeSight, Strings.vision_bareEyeSight, Strings.vision_eyeGlasses, Strings.vision_bestEyeSight];

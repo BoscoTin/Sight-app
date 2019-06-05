@@ -47,7 +47,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
   @override
   void initState() {
     /// SET THE TAB LENGTH HERE
-    _tabController = TabController(vsync: this, length: Constants.slitLampTabNumber);
+    _tabController = TabController(vsync: this, length: Constants.consultationTabNumber);
 
     /// Construct the data types
     basicInfoList = [Strings.studentName, Strings.studentNumber, Strings.studentSex, Strings.studentBirth];
@@ -134,7 +134,8 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
               controller: _tabController,
               children: <Widget>[
                 constructTab(basicInfoList, 'basic'),
-                constructTab(checkInfoList, 'checking'),
+                constructTab(checkInfoList, 'checking-right'),
+                constructTab(checkInfoList, 'checking-left'),
                 constructTab(slitExtraInfoList, 'extra'),
                 Consultation(
                   isViewing: ((widget.isReviewing == 'true')? true : false),
@@ -150,13 +151,37 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
   ListView constructTab(List<String> checkList, String type){
     List<Widget> list = [];
 
+    if(type == 'checking-right')
+      list.add(
+        Center(
+          child: Text(Strings.right,
+            style: TextStyle(
+              fontSize: Constants.normalFontSize + 5
+            ),
+          ),
+        )
+      );
+    if(type == 'checking-left')
+      list.add(
+          Center(
+            child: Text(Strings.left,
+              style: TextStyle(
+                  fontSize: Constants.normalFontSize + 5
+              ),
+            ),
+          )
+      );
+
     for(String item in checkList){
       switch(type){
         case 'basic':
           list.add(basicFieldRow(item));
           break;
-        case 'checking':
-          list.add(checkingRow(item));
+        case 'checking-right':
+          list.add(checkingRow(item, false));
+          break;
+        case 'checking-left':
+          list.add(checkingRow(item, true));
           break;
         case 'extra':
           list.add(slitExtraRow(item));
@@ -180,7 +205,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     @ parameter
     infoItem: take the infoItem from infoList
   */
-  Widget checkingRow (String checkInfo){
+  Widget checkingRow (String checkInfo, bool isLeft){
     return Container(
       height: MediaQuery.of(context).size.height * Constants.columnRatio,
 
@@ -195,67 +220,70 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           ),
 
           title: FutureBuilder<CheckInfo>(
-            future: getCheckInfo(false, widget.profileID),
+            future: getCheckInfo(isLeft, widget.profileID),
             builder: (context, rep){
-              if (rep.hasData){
+              if(rep == null){
+                return Text('',);
+              }
+              else if (rep.hasData){
                 if (checkInfo == Strings.vision_livingEyeSight){
                   return SizedBox(
-                    child: Text(rep.data.vision_livingEyeSight, textAlign: TextAlign.center,),
+                    child: Text((rep.data.vision_livingEyeSight == null) ? '' : rep.data.vision_livingEyeSight, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.vision_bareEyeSight){
                   return SizedBox(
-                    child: Text(rep.data.vision_bareEyeSight, textAlign: TextAlign.center,),
+                    child: Text((rep.data.vision_bareEyeSight == null)? '' : rep.data.vision_bareEyeSight, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.vision_eyeGlasses){
                   return SizedBox(
-                    child: Text(rep.data.vision_eyeGlasses, textAlign: TextAlign.center,),
+                    child: Text((rep.data.vision_eyeGlasses == null)?'':rep.data.vision_eyeGlasses, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.vision_bestEyeSight){
                   return SizedBox(
-                    child: Text(rep.data.vision_bestEyeSight, textAlign: TextAlign.center,),
+                    child: Text((rep.data.vision_bestEyeSight == null)?'':rep.data.vision_bestEyeSight, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.opto_diopter){
                   return SizedBox(
-                    child: Text(rep.data.opto_diopter, textAlign: TextAlign.center,),
+                    child: Text((rep.data.opto_diopter == null)?'':rep.data.opto_diopter, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.opto_astigmatism){
                   return SizedBox(
-                    child: Text(rep.data.opto_astigmatism, textAlign: TextAlign.center,),
+                    child: Text((rep.data.opto_astigmatism == null)?'':rep.data.opto_astigmatism, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.opto_astigmatismaxis){
                   return SizedBox(
-                    child: Text(rep.data.opto_astigmatismaxis, textAlign: TextAlign.center,),
+                    child: Text((rep.data.opto_astigmatismaxis == null)?'':rep.data.opto_astigmatismaxis, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.slit_conjunctiva) {
                   return SizedBox(
-                    child: Text(rep.data.slit_conjunctiva, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_conjunctiva == null)?'':rep.data.slit_conjunctiva, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.slit_cornea) {
                   return SizedBox(
-                    child: Text(rep.data.slit_cornea, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_cornea == null)?'':rep.data.slit_cornea, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.slit_eyelid) {
                   return SizedBox(
-                    child: Text(rep.data.slit_eyelid, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_eyelid == null)?'':rep.data.slit_eyelid, textAlign: TextAlign.center,),
                   );
                 }
                 else if (checkInfo == Strings.slit_lens) {
                   return SizedBox(
-                      child: Text(rep.data.slit_lens, textAlign: TextAlign.center,)
+                      child: Text((rep.data.slit_lens == null)?'':rep.data.slit_lens, textAlign: TextAlign.center,)
                   );
                 }
                 else if (checkInfo == Strings.slit_Hirschbergtest) {
                   return SizedBox(
-                    child: Text(rep.data.slit_Hirschbergtest, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_Hirschbergtest == null)?'':rep.data.slit_Hirschbergtest, textAlign: TextAlign.center,),
                   );
                 }
               }
@@ -286,10 +314,13 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
               title: FutureBuilder<BasicInfo>(
                 future: getBasicInfo(widget.profileID),
                 builder: (context, rep){
-                  if (rep.hasData){
+                  if(rep == null){
+                    return Text('',);
+                  }
+                  else if (rep.hasData){
                     if (basicInfo == Strings.studentName){
                       return SizedBox(
-                        child: Text(rep.data.name, textAlign: TextAlign.center,),
+                        child: Text((rep.data.name == null)?'':rep.data.name, textAlign: TextAlign.center,),
                       );
                     }
                     else if (basicInfo == Strings.studentNumber){
@@ -299,7 +330,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                     }
                     else if (basicInfo == Strings.studentSex){
                       return SizedBox(
-                        child: Text(rep.data.sex, textAlign: TextAlign.center,),
+                        child: Text((rep.data.sex == null)?'':rep.data.sex, textAlign: TextAlign.center,),
                       );
                     }
                     else if (basicInfo == Strings.studentBirth){
@@ -335,15 +366,18 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           title: FutureBuilder<SlitExtraInfo>(
             future: getSlitExtraInfo(widget.profileID),
             builder: (context, rep){
-              if (rep.hasData){
+              if(rep == null){
+                return Text('',);
+              }
+              else if (rep.hasData){
                 if (slitExtraInfo == Strings.slit_exchange){
                   return SizedBox(
-                    child: Text(rep.data.slit_exchange, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_exchange == null)?'':rep.data.slit_exchange, textAlign: TextAlign.center,),
                   );
                 }
                 else if (slitExtraInfo == Strings.slit_eyeballshivering){
                   return SizedBox(
-                    child: Text(rep.data.slit_eyeballshivering, textAlign: TextAlign.center,),
+                    child: Text((rep.data.slit_eyeballshivering == null)?'':rep.data.slit_eyeballshivering, textAlign: TextAlign.center,),
                   );
                 }
               }

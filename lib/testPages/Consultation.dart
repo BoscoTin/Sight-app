@@ -37,6 +37,9 @@ class _ConsultState extends State<Consultation>{
   // controller of '處理'
   TextEditingController handleController;
 
+  // test list
+  List<String> testList;
+
   // construct
   @override
   void initState(){
@@ -45,6 +48,8 @@ class _ConsultState extends State<Consultation>{
     formOtherController = Map();
     otherValue = Map();
     handleController = new TextEditingController();
+
+    
   }
 
   String getData(String key){
@@ -70,7 +75,9 @@ class _ConsultState extends State<Consultation>{
   /*
    Card for building single row of checked data
    */
-  Card oneRow(String info){
+  Card oneRow(String info, String value){
+    if(value == null) value = '';
+
     return Card(
       color: Theme.of(context).disabledColor,
       child: ListTile(
@@ -81,13 +88,11 @@ class _ConsultState extends State<Consultation>{
         ),
 
         // TODO: fill the title part with future builder of text, showing value of consultation part
-        title: FutureBuilder(
-            future: getConsultRecord(widget.profileID),
-            builder: (context, rep){
-              if(rep.hasData){
-
-              }
-            }
+        title: Text(value,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: Constants.normalFontSize
+          ),
         ),
       ),
     );
@@ -100,8 +105,23 @@ class _ConsultState extends State<Consultation>{
     List<Widget> list = [];
 
     list.add(
-      // TODO: add cards here by loop
-      null
+      FutureBuilder<ConsultRecord>(
+        future: getConsultRecord(widget.profileID),
+          builder: (context, rep){
+            if(rep != null && rep.hasData){
+              return(Column(
+                children: <Widget>[
+                  oneRow(Strings.consultation, rep.data.problems),
+                  oneRow(Strings.con_handle, rep.data.handle),
+                  oneRow(Strings.con_furtheroptomery, (rep.data.furtheropt == 'yes') ? Strings.need : ((rep.data.furtheropt == null)? null : Strings.noNeed)),
+                  oneRow(Strings.con_furtherreview, (rep.data.furtherreview == 'yes') ? Strings.need : ((rep.data.furtherreview == null) ? null : Strings.noNeed)),
+                ],
+              ));
+            }
+            else{
+              return oneRow('404', 'not found');
+            }
+          })
     );
 
     return list;
@@ -159,8 +179,6 @@ class _ConsultState extends State<Consultation>{
             children: <Widget>[
               furtherButtons(Strings.con_furtherreview),
               furtherButtons(Strings.con_furtheroptomery),
-              //radioButtons([Strings.con_furtherreview], Strings.con_furtherreview),
-              //radioButtons([Strings.con_furtheroptomery], Strings.con_furtheroptomery),
             ]
         ),
       ),

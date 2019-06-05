@@ -34,6 +34,7 @@ class Strings{
   static const String profileID= '档案编号';
   static const String searchButton = '搜寻';
   static const String searching = '搜寻中, 请稍等';
+  static const String searchSameNameAlert = '请问是下列哪位同学?';
 
   static const String patientIDTyping = '學生姓名: ';
   static const String profileIDTyping= '档案编号: ';
@@ -97,6 +98,9 @@ class Strings{
   static const String con_furtheroptomery = '需进一步验光';
   static const String con_previouspage = '上一页';
   static const String con_nextpatient = '下一个';
+
+  static const String need = '需要';
+  static const String noNeed = '不需要';
 
   // For patient data
   static const String studentName = '学生姓名';

@@ -18,12 +18,16 @@ Future<ConsultRecord> createConsultRecord(String patientID, Map body) async{
 }
 
 Future<ConsultRecord> getConsultRecord(String patientID) async{
-  final response = await http.get('${Constants.URL_RECORD}?patient_id=${patientID}', headers: {"Accept": "application/json"});
+  try{
+    final response = await http.get('${Constants.URL_RECORD}?patient_id=${patientID}', headers: {"Accept": "application/json"});
 
-  if (response.statusCode == 200) {
-    return ConsultRecord.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load post');
+    if (response.statusCode == 200) {
+      return ConsultRecord.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  } catch (e){
+    return null;
   }
 }
 
