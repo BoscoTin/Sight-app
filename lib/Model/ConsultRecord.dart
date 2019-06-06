@@ -41,10 +41,10 @@ class ConsultRecord{
 
   factory ConsultRecord.fromJson(Map<String, dynamic> json){
     return ConsultRecord(
-      problems: json['problems'],
-      handle: json['handle'],
-      furtherreview: json['furtherreview'],
-      furtheropt: json['furtheropt']
+      problems: json['data'][0]['problems'],
+      handle: json['data'][0]['handle'],
+      furtherreview: json['data'][0]['furtherreview'],
+      furtheropt: json['data'][0]['furtheropt']
     );
   }
 

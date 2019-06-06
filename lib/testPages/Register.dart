@@ -83,6 +83,9 @@ class _RegisterState extends State<Register>{
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: Strings.typeHere,
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).buttonColor
+                        )
                       ),
                       controller: studentNameController,
                       // Set the keyboard
@@ -107,6 +110,9 @@ class _RegisterState extends State<Register>{
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: Strings.typeHere,
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).buttonColor
+                          )
                       ),
                       controller: studentIDController,
                       // Set the keyboard

@@ -87,7 +87,6 @@ class _ConsultState extends State<Consultation>{
           ),
         ),
 
-        // TODO: fill the title part with future builder of text, showing value of consultation part
         title: Text(value,
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -108,7 +107,7 @@ class _ConsultState extends State<Consultation>{
       FutureBuilder<ConsultRecord>(
         future: getConsultRecord(widget.profileID),
           builder: (context, rep){
-            if(rep != null && rep.hasData){
+            if(rep.hasData){
               return(Column(
                 children: <Widget>[
                   oneRow(Strings.consultation, rep.data.problems),
