@@ -90,6 +90,10 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     }
 
     return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+
       /// define swipe action to next page
       onHorizontalDragEnd: (DragEndDetails details) => (details) {
         if (details.primaryVelocity == 0) {

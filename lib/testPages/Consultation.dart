@@ -220,7 +220,7 @@ class _ConsultState extends State<Consultation>{
               Functions.showAlert(
                   context,
                   Strings.successRecord,
-                  Functions.backHome
+                  Functions.backPage
               );
             }
           },

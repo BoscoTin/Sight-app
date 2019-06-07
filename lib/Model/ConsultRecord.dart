@@ -14,7 +14,7 @@ Future<ConsultRecord> createConsultRecord(String patientID, Map body) async{
        }
        final rep = json.decode(response.body);
        final repJson = rep[0];
-       return ConsultRecord.fromJson(repJson);
+       return ConsultRecord.fromReturnJson(repJson);
      });
    } catch (e){
      return null;
@@ -49,6 +49,15 @@ class ConsultRecord{
       handle: json['data'][0]['handle'],
       furtherreview: json['data'][0]['furtherreview'],
       furtheropt: json['data'][0]['furtheropt']
+    );
+  }
+
+  factory ConsultRecord.fromReturnJson(Map<String, dynamic> json){
+    return ConsultRecord(
+        problems: json['problems'],
+        handle: json['handle'],
+        furtherreview: json['furtherreview'],
+        furtheropt: json['furtheropt']
     );
   }
 
