@@ -194,11 +194,6 @@ class _UserSearchState extends State<UserSearch>{
                     /// set up arguments and push to desired route
                     List<String> args = [widget.test, patientID, info.name, 'true'];
                     Navigator.pushNamed(context, route, arguments: args);
-
-                    /// set back state of the button
-                    setState(() {
-                      widget.progress = Strings.searchButton;
-                    });
                   } else{
                     /// search patient name and users choose which one
                     String patientName = patientNameController.text;
@@ -212,11 +207,6 @@ class _UserSearchState extends State<UserSearch>{
                           /// set up arguments and push to desired route
                           List<String> args = [widget.test, navigate[1], patientName, 'true'];
                           Navigator.pushNamed(context, route, arguments: args);
-
-                          /// set back state of the button
-                          setState(() {
-                            widget.progress = Strings.searchButton;
-                          });
                         }
 
                         else{
@@ -231,9 +221,11 @@ class _UserSearchState extends State<UserSearch>{
                     }
                   }
 
-                  /// set back state of the button
+                  /// set back state of the button and the text controllers
                   setState(() {
                     widget.progress = Strings.searchButton;
+                    fileNumberController.text = '';
+                    patientNameController.text = '';
                   });
                 },
               ),
