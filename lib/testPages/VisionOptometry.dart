@@ -212,17 +212,19 @@ class _VisionOptometryState extends State<VisionOptometry>{
                   right_vision_bestEyeSight: rightFieldControllers[Strings.vision_bestEyeSight].text
               );
               // Call the API
-              VisionTest newData = await createVisionTest(widget.profileID, body: newVisionTest.toMap());
+              VisionTest newData = await createVisionTest(widget.profileID, body: newVisionTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-              // show the following alert when the data is successfully submitted to the server
-              Functions.showAlert(context, Strings.successRecord, Functions.backPage);
-              /*
-              // show the following alert and set state when data cannot be submitted
-              Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
-              */
-              setState(() {
-                widget.progress = Strings.confirm;
-              });
+              if(newData != null) {
+                // show the following alert when the data is successfully submitted to the server
+                Functions.showAlert(
+                    context, Strings.successRecord, Functions.backPage);
+              } else {
+                // show the following alert and set state when data cannot be submitted
+                Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
+                setState(() {
+                  widget.progress = Strings.confirm;
+                });
+              }
             }
             else{
               OptTest newOptTest = new OptTest
@@ -235,17 +237,19 @@ class _VisionOptometryState extends State<VisionOptometry>{
                 right_opto_astigmatism: rightFieldControllers[Strings.opto_astigmatism].text,
                 right_opto_astigmatismaxis: rightFieldControllers[Strings.opto_astigmatismaxis].text,
               );
-              OptTest newData = await createOptTest(widget.profileID, newOptTest.toMap());
+              OptTest newData = await createOptTest(widget.profileID, newOptTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-              // show the following alert when the data is successfully submitted to the server
-              Functions.showAlert(context, Strings.successRecord, Functions.backPage);
-              /*
-              // show the following alert and set state when data cannot be submitted
-              Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
-              */
-              setState(() {
-                widget.progress = Strings.confirm;
-              });
+              if(newData != null) {
+                // show the following alert when the data is successfully submitted to the server
+                Functions.showAlert(
+                    context, Strings.successRecord, Functions.backPage);
+              } else {
+                // show the following alert and set state when data cannot be submitted
+                Functions.showAlert(context, Strings.cannotSubmit, Functions.nothing);
+                setState(() {
+                  widget.progress = Strings.confirm;
+                });
+              }
             }
           },
         )

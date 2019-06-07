@@ -229,6 +229,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
               widget.progress = Strings.submitting;
             });
 
+            // FACTORY THE OBJECT
             SlitlampTest newslitlampTest = new SlitlampTest(
                 left_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.left),
                 right_slit_conjunctiva: getData(Strings.slit_conjunctiva+Strings.right),
@@ -243,20 +244,30 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                 slit_exchange: getData(Strings.slit_exchange),
                 slit_eyeballshivering: getData(Strings.slit_eyeballshivering)
             );
-            SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap());
+            SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-            /// finish alert here, press confirm to
-            Functions.showAlert(context,
-                Strings.successRecord,
-                    (BuildContext context){
-                  Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/reviewProfile',
-                    arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
-                  );
-                });
+            if(newData == null){
+              /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN
+              Functions.showAlert(
+                  context,
+                  Strings.cannotSubmit,
+                  Functions.nothing
+              );
 
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => Consultation(profileID: widget.profileID, patientName: widget.patientName,)));
-
+              setState(() {
+                widget.progress = Strings.confirm;
+              });
+            } else {
+              /// finish alert here, press confirm to navigate to consultation page
+              Functions.showAlert(context,
+                  Strings.successRecord,
+                      (BuildContext context){
+                    Navigator.of(context).pop();
+                    Navigator.pushNamed(context, '/reviewProfile',
+                      arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
+                    );
+                  });
+            }
           },
           child: Text(widget.progress,
             style: TextStyle(fontSize: Constants.normalFontSize),

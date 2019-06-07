@@ -183,7 +183,7 @@ class _ConsultState extends State<Consultation>{
       ),
     );
 
-    /// CHECKING BUTTON
+    /// SUBMIT BUTTON
     list.add(
       // confirm button
       SizedBox(
@@ -202,14 +202,27 @@ class _ConsultState extends State<Consultation>{
                 furtheropt: radioValue[Strings.con_furtheroptomery],
                 furtherreview: radioValue[Strings.con_furtherreview]
             );
-            ConsultRecord newConsult = await createConsultRecord(widget.profileID, newConsultRecord.toMap());
+            ConsultRecord newConsult = await createConsultRecord(widget.profileID, newConsultRecord.toMap()).timeout(const Duration(seconds: 10), onTimeout: () {return null;});
 
-            // FINISH ALERT AND POP TO HOME PAGE
-            Functions.showAlert(
-                context,
-                Strings.successRecord,
-                Functions.backHome
-            );
+            if(newConsult == null){
+              // CALL USER TO SUBMIT AGAIN
+              Functions.showAlert(
+                  context,
+                  Strings.cannotSubmit,
+                  Functions.nothing
+              );
+
+              setState(() {
+                widget.progress = Strings.confirm;
+              });
+            } else {
+              // FINISH ALERT AND POP TO HOME PAGE
+              Functions.showAlert(
+                  context,
+                  Strings.successRecord,
+                  Functions.backHome
+              );
+            }
           },
           child: Text(widget.progress,
             style: TextStyle(fontSize: Constants.normalFontSize),

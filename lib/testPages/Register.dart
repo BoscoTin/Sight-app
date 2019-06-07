@@ -190,11 +190,11 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
 
-                /// Textfield for that info
+                /// Textfield for date info
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentSex,
+                    leading: Text( Strings.studentBirth,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -243,16 +243,36 @@ class _RegisterState extends State<Register>{
                         studentBirth: DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
                         studentSex: studentSex
                     );
-                    PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap());
+                    PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-                    // Write to check-record database
-                    PatientID newPatientID = new PatientID(
-                        patient_id: studentIDController.text
-                    );
-                    PatientID patientid = await createPatientID(newPatientID.toMap());
+                    if(patientinfo != null){
+                      // Write to check-record database
+                      PatientID newPatientID = new PatientID(
+                          patient_id: studentIDController.text
+                      );
+                      PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-                    // Notice the user that the patient has been added
-                    Functions.showAlert(context, Strings.successRecord + '\n' + Strings.profileID + ' ' + patientid.patient_id, Functions.nothing);
+                      if(patientid != null) {
+                        // Notice the user that the patient has been added
+                        Functions.showAlert(context,
+                            Strings.successRecord + '\n' + Strings.profileID +
+                                ' ' + patientid.patient_id, Functions.nothing);
+                      } else{
+                        /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN
+                        Functions.showAlert(
+                          context,
+                          Strings.cannotSubmit,
+                          Functions.nothing
+                        );
+                      }
+                    } else{
+                      /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN
+                      Functions.showAlert(
+                          context,
+                          Strings.cannotSubmit,
+                          Functions.nothing
+                      );
+                    }
 
                     // clear screen and restore to default
                     setState(() {

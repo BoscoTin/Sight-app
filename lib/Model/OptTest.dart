@@ -4,18 +4,19 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<OptTest> createOptTest(String patientID, Map<String, dynamic> body) async {
-
-  return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response) {
-
-    final int statusCode = response.statusCode;
-
-    if (statusCode < 200 || statusCode > 400 || json == null){
-      throw new Exception("Error while fetching data");
-    }
-    final rep = json.decode(response.body);
-    final repJson = rep[0];
-    return OptTest.fromJson(repJson);
-  });
+  try{
+    return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null){
+        return null;
+      }
+      final rep = json.decode(response.body);
+      final repJson = rep[0];
+      return OptTest.fromJson(repJson);
+    });
+  } catch(e){
+    return null;
+  }
 }
 
 class OptTest{

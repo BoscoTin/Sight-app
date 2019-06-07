@@ -172,25 +172,25 @@ class _UserSearchState extends State<UserSearch>{
                     getBasicInfo(patientID).timeout(const Duration(seconds: 10), onTimeout: () => null ): null);
                   String route;
 
+                  /// set up navigating route
+                  switch(widget.test){
+                    case Strings.visionTest:
+                    case Strings.optometry:
+                      route = '/visionOptometry';
+                      break;
+                    case Strings.slitLamp:
+                      route = '/slitLamp';
+                      break;
+                    case Strings.reviewingProfile:
+                      route = '/reviewProfile';
+                      break;
+                    default:
+                      route = '';
+                      break;
+                  }
+
                   // check if the patient id is null or not
                   if(info != null){
-                    /// set up navigating route
-                    switch(widget.test){
-                      case Strings.visionTest:
-                      case Strings.optometry:
-                        route = '/visionOptometry';
-                        break;
-                      case Strings.slitLamp:
-                        route = '/slitLamp';
-                        break;
-                      case Strings.reviewingProfile:
-                        route = '/reviewProfile';
-                        break;
-                      default:
-                        route = '';
-                        break;
-                    }
-
                     /// set up arguments and push to desired route
                     List<String> args = [widget.test, patientID, info.name, 'true'];
                     Navigator.pushNamed(context, route, arguments: args);
@@ -200,7 +200,7 @@ class _UserSearchState extends State<UserSearch>{
                       widget.progress = Strings.searchButton;
                     });
                   } else{
-                    // TODO: search patient name and users choose which one
+                    /// search patient name and users choose which one
                     String patientName = patientNameController.text;
                     if(patientName != ''){
                       List<BasicInfo> sameNameList = await getSameNameInfos(patientName).timeout(const Duration(seconds: 10), onTimeout: () => null );
@@ -209,22 +209,6 @@ class _UserSearchState extends State<UserSearch>{
                         List<String> navigate = await Functions.chooseList(context, sameNameList);
 
                         if(navigate != null && navigate[0] == 'true'){
-                          switch(widget.test){
-                            case Strings.visionTest:
-                            case Strings.optometry:
-                              route = '/visionOptometry';
-                              break;
-                            case Strings.slitLamp:
-                              route = '/slitLamp';
-                              break;
-                            case Strings.reviewingProfile:
-                              route = '/reviewProfile';
-                              break;
-                            default:
-                              route = '';
-                              break;
-                          }
-
                           /// set up arguments and push to desired route
                           List<String> args = [widget.test, navigate[1], patientName, 'true'];
                           Navigator.pushNamed(context, route, arguments: args);
@@ -235,30 +219,22 @@ class _UserSearchState extends State<UserSearch>{
                           });
                         }
 
-                        /// BELOW ARE THE ERRORS
                         else{
                           Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
-                          /// set back state of the button
-                          setState(() {
-                            widget.progress = Strings.searchButton;
-                          });
                         }
                       }
                       else{
                         Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
-                        /// set back state of the button
-                        setState(() {
-                          widget.progress = Strings.searchButton;
-                        });
                       }
                     } else {
                       Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
-                      /// set back state of the button
-                      setState(() {
-                        widget.progress = Strings.searchButton;
-                      });
                     }
                   }
+
+                  /// set back state of the button
+                  setState(() {
+                    widget.progress = Strings.searchButton;
+                  });
                 },
               ),
             ],

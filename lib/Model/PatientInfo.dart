@@ -4,16 +4,20 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<PatientInfo> createPatientInfo(Map body) async{
-  return http.post(Constants.URL_STU, body: body).then((http.Response response){
-    final int statusCode = response.statusCode;
+  try{
+    return http.post(Constants.URL_STU, body: body).then((http.Response response){
+      final int statusCode = response.statusCode;
 
-    if (statusCode < 200 || statusCode > 400 || json == null){
-      throw new Exception("Error while fetching data");
-    }
-    final rep = json.decode(response.body);
-    final repJson = rep;
-    return PatientInfo.fromJson(repJson);
-  });
+      if (statusCode < 200 || statusCode > 400 || json == null){
+        return null;
+      }
+      final rep = json.decode(response.body);
+      final repJson = rep;
+      return PatientInfo.fromJson(repJson);
+    });
+  } catch(e){
+    return null;
+  }
 }
 
 class PatientInfo{
@@ -49,7 +53,7 @@ Future<PatientID> createPatientID(Map body) async{
     final int statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode > 400 || json == null){
-      throw new Exception("Error while fetching data");
+      return null;
     }
     final rep = json.decode(response.body);
     final repJson = rep;

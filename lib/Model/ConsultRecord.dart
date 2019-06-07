@@ -5,16 +5,20 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<ConsultRecord> createConsultRecord(String patientID, Map body) async{
-   return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response){
-    final int statusCode = response.statusCode;
+   try{
+     return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response){
+       final int statusCode = response.statusCode;
 
-    if (statusCode < 200 || statusCode > 400 || json == null){
-      throw new Exception("Error while fetching data");
-    }
-    final rep = json.decode(response.body);
-    final repJson = rep[0];
-    return ConsultRecord.fromJson(repJson);
-  });
+       if (statusCode < 200 || statusCode > 400 || json == null){
+         return null;
+       }
+       final rep = json.decode(response.body);
+       final repJson = rep[0];
+       return ConsultRecord.fromJson(repJson);
+     });
+   } catch (e){
+     return null;
+   }
 }
 
 Future<ConsultRecord> getConsultRecord(String patientID) async{
