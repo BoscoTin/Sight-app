@@ -5,7 +5,7 @@ import 'package:myapp/Utilities/Constant.dart';
 
 Future<SlitExtraInfo> getSlitExtraInfo(String patientName, String dateOfBirth) async{
   try{
-    final response = await http.get('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', headers: {"Accept": "application/json"});
+    final response = await http.get('${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {
       return SlitExtraInfo.fromJson(json.decode(response.body));

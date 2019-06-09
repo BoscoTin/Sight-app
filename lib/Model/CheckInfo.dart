@@ -7,7 +7,7 @@ Future<CheckInfo> getCheckInfo(bool isLeft, String patientName, String dateOfBir
 
   try {
     final response = await http.get(
-        '${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}',
+        '${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}',
         headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {

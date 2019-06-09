@@ -9,7 +9,7 @@ import 'package:myapp/Utilities/Constant.dart';
 Future<BasicInfo> getBasicInfo(String patientName, String dateOfBirth) async{
   http.Response response;
   try{
-    response = await http.get('${Constants.URL_STU}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', headers: {"Accept": "application/json"});
+    response = await http.get('${Constants.URL_STU}?patientName=${patientName}&patientBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       return BasicInfo.fromJson(json.decode(response.body));
     } else {
@@ -58,11 +58,11 @@ Future<List<BasicInfo>> getSameInfos(String name, String date) async{
 
   String queryPath = Constants.URL_STU;
   if(name != '' && date != ''){
-    queryPath += '?q={{"\$and": [{"patientName=":"${name}"}, {"patientBirth":"${date}"}]}}';
+    queryPath += '?patientName=${name}&patientBirth=${date}';
   } else if (name != ''){
-    queryPath += '?q={{"\$and": [{"patientName=":"${name}"}]}}';
+    queryPath += '?patientName=${name}';
   } else if (date != ''){
-    queryPath += '?q={{"\$and": [{"patientBirth=":"${date}"}]}}';
+    queryPath += '?patientBirth=${date}';
   } else return null;
 
   print(queryPath);

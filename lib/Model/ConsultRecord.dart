@@ -6,7 +6,7 @@ import 'package:myapp/Utilities/Constant.dart';
 
 Future<ConsultRecord> createConsultRecord(String patientName, String dateOfBirth, Map body) async{
    try{
-     return http.patch('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', body: body).then((http.Response response){
+     return http.patch('${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}', body: body).then((http.Response response){
        final int statusCode = response.statusCode;
 
        if (statusCode < 200 || statusCode > 400 || json == null){
