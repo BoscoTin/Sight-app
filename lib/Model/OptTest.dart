@@ -3,9 +3,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
-Future<OptTest> createOptTest(String patientID, Map<String, dynamic> body) async {
+Future<OptTest> createOptTest(String patientName, String dateOfBirth, Map<String, dynamic> body) async {
   try{
-    return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response) {
+    return http.patch('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', body: body).then((http.Response response) {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null){
         return null;

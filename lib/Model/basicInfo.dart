@@ -6,10 +6,10 @@ import 'package:myapp/Utilities/Constant.dart';
 /*
   # The function that will make use of the http.get method to do GET operation
 */
-Future<BasicInfo> getBasicInfo(String patientID) async{
+Future<BasicInfo> getBasicInfo(String patientName, String dateOfBirth) async{
   http.Response response;
   try{
-    response = await http.get('${Constants.URL_STU}?studentNumber=${patientID}', headers: {"Accept": "application/json"});
+    response = await http.get('${Constants.URL_STU}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       return BasicInfo.fromJson(json.decode(response.body));
     } else {
@@ -51,12 +51,26 @@ class BasicInfo{
   }
 }
 
-Future<List<BasicInfo>> getSameNameInfos(String name) async{
+Future<List<BasicInfo>> getSameInfos(String name, String date) async{
   http.Response response;
+
+  date = date.replaceAll('.', '-');
+
+  String queryPath = Constants.URL_STU;
+  if(name != '' && date != ''){
+    queryPath += '?q={{"\$and": [{"patientName=":"${name}"}, {"patientBirth":"${date}"}]}}';
+  } else if (name != ''){
+    queryPath += '?q={{"\$and": [{"patientName=":"${name}"}]}}';
+  } else if (date != ''){
+    queryPath += '?q={{"\$and": [{"patientBirth=":"${date}"}]}}';
+  } else return null;
+
+  print(queryPath);
+
   try{
-    response = await http.get('${Constants.URL_STU}?studentName=${name}', headers: {"Accept": "application/json"});
+    response = await http.get(queryPath);
     if (response.statusCode == 200) {
-      return sameNameFromJaon(json.decode(response.body));
+      return samePplFromJson(json.decode(response.body));
     } else {
       return null;
     }
@@ -65,7 +79,7 @@ Future<List<BasicInfo>> getSameNameInfos(String name) async{
   }
 }
 
-List<BasicInfo> sameNameFromJaon(Map<dynamic, dynamic> json){
+List<BasicInfo> samePplFromJson(Map<dynamic, dynamic> json){
   List<dynamic> list = json['data'];
 
   List<BasicInfo> returnList = [];

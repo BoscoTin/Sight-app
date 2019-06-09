@@ -240,7 +240,7 @@ class _RegisterState extends State<Register>{
                     PatientInfo newPatientInfo = new PatientInfo(
                         studentName: studentNameController.text,
                         studentNumber: studentIDController.text,
-                        studentBirth: DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
+                        studentBirth: DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
                         studentSex: studentSex
                     );
                     PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });

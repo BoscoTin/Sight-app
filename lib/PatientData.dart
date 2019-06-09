@@ -21,7 +21,7 @@ class PatientData extends StatefulWidget{
   String isReviewing;
 
   String patientName;
-  String profileID;
+  String dateOfBirth;
 
   PatientData({Key key}) :
       isArgsReceived = false,
@@ -83,9 +83,9 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     if(!widget.isArgsReceived){
       List<String> args = ModalRoute.of(context).settings.arguments;
       widget.test = args[0];
-      widget.profileID = args[1];
       widget.patientName = args[2];
-      widget.isReviewing = args[3];
+      widget.dateOfBirth = args[3];
+      widget.isReviewing = args[4];
       widget.isArgsReceived = true;
     }
 
@@ -143,7 +143,8 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                 constructTab(slitExtraInfoList, 'extra'),
                 Consultation(
                   isViewing: ((widget.isReviewing == 'true')? true : false),
-                  profileID: widget.profileID,
+                  patientName: widget.patientName,
+                  dateOfBirth: widget.dateOfBirth,
                 )
               ]
           )
@@ -224,7 +225,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           ),
 
           title: FutureBuilder<CheckInfo>(
-            future: getCheckInfo(isLeft, widget.profileID),
+            future: getCheckInfo(isLeft, widget.patientName, widget.dateOfBirth),
             builder: (context, rep){
               if(rep == null){
                 return Text('',);
@@ -316,7 +317,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                 ),
               ),
               title: FutureBuilder<BasicInfo>(
-                future: getBasicInfo(widget.profileID),
+                future: getBasicInfo(widget.patientName, widget.dateOfBirth),
                 builder: (context, rep){
                   if(rep == null){
                     return Text('',);
@@ -368,7 +369,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
             ),
           ),
           title: FutureBuilder<SlitExtraInfo>(
-            future: getSlitExtraInfo(widget.profileID),
+            future: getSlitExtraInfo(widget.patientName, widget.dateOfBirth),
             builder: (context, rep){
               if(rep == null){
                 return Text('',);

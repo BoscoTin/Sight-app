@@ -11,9 +11,9 @@ import 'package:myapp/Utilities/Constant.dart';
   @return
   http.post
 */
-Future<VisionTest> createVisionTest(String patientID, {Map<String, dynamic> body}) async {
+Future<VisionTest> createVisionTest(String patientName, String dateOfBirth, {Map<String, dynamic> body}) async {
   try{
-    final response = await http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body);
+    final response = await http.patch('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', body: body);
     if (response.statusCode == 200) {
       final rep = json.decode(response.body);
       // Cause before the response body is the array in json['data']

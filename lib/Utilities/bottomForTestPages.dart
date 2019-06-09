@@ -4,13 +4,13 @@ import 'string.dart';
 
 class CustomBottomArea extends StatelessWidget implements PreferredSizeWidget{
   String patientName;
-  String profileID;
+  String dateOfBirth;
 
   @override
   final Size preferredSize;
 
   // constructor
-  CustomBottomArea({Key key, @required this.patientName, @required this.profileID})
+  CustomBottomArea({Key key, @required this.patientName, @required this.dateOfBirth})
       : preferredSize = Size.fromHeight(Constants.appBarBottomSize),
         super(key:key);
 
@@ -31,7 +31,7 @@ class CustomBottomArea extends StatelessWidget implements PreferredSizeWidget{
                   borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
               ),
 
-              child: Text(Strings.profileIDTyping + profileID,
+              child: Text(Strings.studentBirth + ': ' + dateOfBirth,
                 style: TextStyle(
                   fontSize: Constants.appBarBottomFontSize,
                 ),
@@ -47,7 +47,7 @@ class CustomBottomArea extends StatelessWidget implements PreferredSizeWidget{
                   borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
               ),
 
-              child: Text(Strings.patientIDTyping + patientName,
+              child: Text(Strings.patientName + ': ' + patientName,
                 style: TextStyle(
                   fontSize: Constants.appBarBottomFontSize,
                 ),

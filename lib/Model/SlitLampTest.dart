@@ -3,9 +3,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
-Future<SlitlampTest> createSlitLampTest(String patientID, Map body) async{
+Future<SlitlampTest> createSlitLampTest(String patientName, String dateOfBirth, Map body) async{
   try{
-    return http.patch('${Constants.URL_RECORD}?patient_id=${patientID}', body: body).then((http.Response response){
+    return http.patch('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', body: body).then((http.Response response){
       final int statusCode = response.statusCode;
 
       if (statusCode < 200 || statusCode > 400 || json == null){

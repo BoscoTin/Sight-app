@@ -17,11 +17,13 @@ class SlitLamp extends StatefulWidget{
 
   String patientName;
   String profileID;
+  String dateOfBirth;
 
   SlitLamp({Key key}) :
       test = Strings.slitLamp,
       patientName = '',
       profileID = '',
+      dateOfBirth = '',
       isArgsReceived = false,
       progress = Strings.confirm,
         super(key:key);
@@ -82,8 +84,10 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
     /// receive parameters from last page
     if(!widget.isArgsReceived){
       List<String> args = ModalRoute.of(context).settings.arguments;
+      print(args);
       widget.profileID = args[1];
       widget.patientName = args[2];
+      widget.dateOfBirth = args[3];
       widget.isArgsReceived = true;
     }
 
@@ -114,7 +118,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
           backPressed: backPressed,
 
           /// TO SHOW PATIENT NAME AND ITS ID
-          bottomShowing: CustomBottomArea(patientName: widget.patientName, profileID: widget.profileID),
+          bottomShowing: CustomBottomArea(patientName: widget.patientName, dateOfBirth: widget.dateOfBirth,),
         ),
 
         /// DOTS IN THE BOTTOM, showing which page
@@ -244,7 +248,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                 slit_exchange: getData(Strings.slit_exchange),
                 slit_eyeballshivering: getData(Strings.slit_eyeballshivering)
             );
-            SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+            SlitlampTest newData = await createSlitLampTest(widget.patientName, widget.dateOfBirth, newslitlampTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
             if(newData == null){
               /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN

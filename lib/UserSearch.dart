@@ -3,6 +3,7 @@ import 'Utilities/Constant.dart';
 import 'Utilities/Functions.dart';
 import 'Utilities/AppBar.dart';
 import 'Utilities/string.dart';
+import 'package:intl/intl.dart';
 
 import 'dart:async';
 import 'package:myapp/Model/BasicInfo.dart';
@@ -28,7 +29,7 @@ class UserSearch extends StatefulWidget{
 
 class _UserSearchState extends State<UserSearch>{
   TextEditingController patientNameController;
-  TextEditingController fileNumberController;
+  DateTime studentDateOfBirth;
 
   /// define back press action
   Future<bool> Function(BuildContext) backPressed = (BuildContext context) => Functions.onBackPressedAlert(
@@ -41,7 +42,7 @@ class _UserSearchState extends State<UserSearch>{
   @override
   void initState(){
     patientNameController = new TextEditingController();
-    fileNumberController = new TextEditingController();
+    studentDateOfBirth = new DateTime.now();
     super.initState();
   }
 
@@ -78,64 +79,56 @@ class _UserSearchState extends State<UserSearch>{
             padding: const EdgeInsets.only(left: 50.0, right: 50.0, top: 40.0, bottom: 40.0),
 
             children: <Widget>[
-              /// THE PROFILE ID TEXT FIELD
-              Container(
-                padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 0.0, bottom: 0.0),
-                width: MediaQuery.of(context).size.width *2 / 3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(Constants.boxBorderRadius)
+              /// THE PATIENT NAME INPUT FIELD
+              Card(
+                color: Theme.of(context).disabledColor,
+                child: ListTile(
+                  leading: Text( Strings.studentName,
+                    style: TextStyle(
+                        fontSize: Constants.normalFontSize
+                    ),
                   ),
-                  color: Theme.of(context).disabledColor,
-                ),
-
-                child: TextField(
-                  controller: fileNumberController,
-                  decoration: InputDecoration(
-                      hintText: Strings.profileID,
-                      hintStyle: TextStyle(
-                        color: Theme.of(context).buttonColor,
-                      ),
-                      border: InputBorder.none
-                  ),
-                  style: TextStyle(
-                    color: Theme.of(context).textSelectionColor,
+                  title: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: Strings.typeHere,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).buttonColor
+                        )
+                    ),
+                    controller: patientNameController,
+                    // Set the keyboard
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: Constants.normalFontSize),
                   ),
                 ),
               ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
 
-              /// THE PATIENT NAME INPUT FIELD
-              Container(
-                padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 0.0, bottom: 0.0),
-                width: MediaQuery.of(context).size.width *2 / 3,
-                /// Set the text area to white
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(Constants.boxBorderRadius)
+              /// Textfield for date info
+              Card(
+                color: Theme.of(context).disabledColor,
+                child: ListTile(
+                  leading: Text( Strings.studentBirth,
+                    style: TextStyle(
+                        fontSize: Constants.normalFontSize
+                    ),
                   ),
-                  color: Theme.of(context).disabledColor,
-                ),
 
-                child: TextField(
-                  // State the text data controller
-                  controller: patientNameController,
-                  /// decorate text field, cancel the bottom border
-                  decoration: InputDecoration(
-                    // hint text
-                      hintText: Strings.patientName,
-                      hintStyle: TextStyle(
-                        color: Theme.of(context).buttonColor,
-                      ),
-                      // Cancel the border line under the textfield
-                      border: InputBorder.none
-                  ),
-                  style: TextStyle(
-                    color: Theme.of(context).textSelectionColor,
+                  title: GestureDetector(
+                    child: Text(
+                      DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: Constants.normalFontSize),
+                    ),
+                    onTap: () => _selectDate(context),
                   ),
                 ),
               ),
+
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
 
@@ -167,12 +160,12 @@ class _UserSearchState extends State<UserSearch>{
                     widget.progress = Strings.searching;
                   });
 
-                  String patientID = fileNumberController.text;
-                  BasicInfo info = await ((patientID != '')?
-                    getBasicInfo(patientID).timeout(const Duration(seconds: 10), onTimeout: () => null ): null);
-                  String route;
+                  String patientName = patientNameController.text;
+                  String dateOfBirth = DateFormat('yyyy.MM.dd').format(studentDateOfBirth);
+                  List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth).timeout(const Duration(seconds: 10), onTimeout: () => null );
 
                   /// set up navigating route
+                  String route;
                   switch(widget.test){
                     case Strings.visionTest:
                     case Strings.optometry:
@@ -189,42 +182,38 @@ class _UserSearchState extends State<UserSearch>{
                       break;
                   }
 
-                  // check if the patient id is null or not
-                  if(info != null){
-                    /// set up arguments and push to desired route
-                    List<String> args = [widget.test, patientID, info.name, 'true'];
-                    Navigator.pushNamed(context, route, arguments: args);
-                  } else{
-                    /// search patient name and users choose which one
-                    String patientName = patientNameController.text;
-                    if(patientName != ''){
-                      List<BasicInfo> sameNameList = await getSameNameInfos(patientName).timeout(const Duration(seconds: 10), onTimeout: () => null );
+                  if(samePplList != null) {
+                    print(samePplList);
 
-                      if(sameNameList != null){
-                        List<String> navigate = await Functions.chooseList(context, sameNameList);
-
-                        if(navigate != null && navigate[0] == 'true'){
-                          /// set up arguments and push to desired route
-                          List<String> args = [widget.test, navigate[1], patientName, 'true'];
-                          Navigator.pushNamed(context, route, arguments: args);
-                        }
-
-                        else{
-                          Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
-                        }
-                      }
-                      else{
+                    if (samePplList.length > 1) {
+                      /// more than one people have same name and same birth
+                      List<String> navigate = await Functions.chooseList(context, samePplList);
+                      if(navigate != null && navigate[0] == 'true'){
+                        /// set up arguments and push to desired route
+                        List<String> args = [widget.test, navigate[1], patientName, dateOfBirth, 'true'];
+                        Navigator.pushNamed(context, route, arguments: args);
+                      } else {
+                        /// find no people, show alert to call user type again
                         Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
                       }
+
+                    } else if (samePplList.length == 1) {
+                      /// set up arguments and push to desired route
+                      List<String> args = [widget.test, samePplList[0].number, patientName, dateOfBirth, 'true'];
+                      Navigator.pushNamed(context, route, arguments: args);
                     } else {
+                      /// find no people, show alert to call user type again
                       Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
                     }
+
+                  } else {
+                    /// find no people, show alert to call user type again
+                    Functions.showAlert(context, Strings.fileNotExist, Functions.nothing);
                   }
 
                   /// set back state of the button and the text controllers
                   setState(() {
                     widget.progress = Strings.searchButton;
-                    fileNumberController.text = '';
                     patientNameController.text = '';
                   });
                 },
@@ -235,4 +224,20 @@ class _UserSearchState extends State<UserSearch>{
       ),
     );
   }
+
+  Future<Null> _selectDate(BuildContext context) async{
+    final DateTime _picked = await showDatePicker(
+        context: context,
+        initialDate: studentDateOfBirth,
+        firstDate: new DateTime(1900),
+        lastDate: DateTime.now()
+    );
+
+    if(_picked != null) {
+      setState(() {
+        studentDateOfBirth = _picked;
+      });
+    }
+  }
+
 }
