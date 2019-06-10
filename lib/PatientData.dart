@@ -330,7 +330,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                     }
                     else if (basicInfo == Strings.parentNumber){
                       return SizedBox(
-                        child: Text((rep.data.number==null)?'':rep.data.sex, textAlign: TextAlign.center,),
+                        child: Text((rep.data.number==null)?'':rep.data.number, textAlign: TextAlign.center,),
                       );
                     }
                     else if (basicInfo == Strings.studentSex){

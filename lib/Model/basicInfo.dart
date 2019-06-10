@@ -11,7 +11,6 @@ Future<BasicInfo> getBasicInfo(String patientName, String dateOfBirth) async{
   try{
     response = await http.get('${Constants.URL_STU}?studentName=${patientName}&studentBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return BasicInfo.fromJson(json.decode(response.body));
     } else {
@@ -38,20 +37,20 @@ class BasicInfo{
   factory BasicInfo.fromJson(Map<String, dynamic> json) {
     return BasicInfo(
       name: json['data'][0]['studentName'],
-      number: json['data'][0]['parentNumber'],
+      number: json['data'][0]['parentsNumber'],
       sex: json['data'][0]['studentSex'],
       birth: json['data'][0]['studentBirth'],
-      //id: json['data'][0]['studentIDCard']
+      id: json['data'][0]['studentIDCard']
     );
   }
 
   factory BasicInfo.fromList(Map<String, dynamic> json){
     return BasicInfo(
       name: json['studentName'],
-      number: json['parentNumber'],
+      number: json['parentsNumber'],
       sex: json['studentSex'],
       birth: json['studentBirth'],
-      //id: json['studentIDCard']
+      id: json['studentIDCard']
     );
   }
 }
