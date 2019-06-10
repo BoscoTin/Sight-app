@@ -27,7 +27,7 @@ Future<VisionTest> createVisionTest(String patientName, String dateOfBirth, {Map
       return null;
     }
   } catch(e){
-    return null;
+    throw Exception(e);
   }
 }
 

@@ -15,7 +15,7 @@ Future<OptTest> createOptTest(String patientName, String dateOfBirth, Map<String
       return OptTest.fromJson(repJson);
     });
   } catch(e){
-    return null;
+    throw Exception(e);
   }
 }
 

@@ -16,7 +16,7 @@ Future<SlitlampTest> createSlitLampTest(String patientName, String dateOfBirth, 
       return SlitlampTest.fromJson(repJson);
     });
   } catch(e){
-    return null;
+    throw Exception(e);
   }
 }
 
