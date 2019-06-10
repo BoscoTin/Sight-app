@@ -20,8 +20,7 @@ class PatientData extends StatefulWidget{
   // define whether it is viewing mode or editing mode
   String isReviewing;
 
-  String patientName;
-  String dateOfBirth;
+  String profileID;
 
   PatientData({Key key}) :
       isArgsReceived = false,
@@ -50,7 +49,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     _tabController = TabController(vsync: this, length: Constants.consultationTabNumber);
 
     /// Construct the data types
-    basicInfoList = [Strings.studentName, Strings.studentIDCard, Strings.parentNumber, Strings.studentSex, Strings.studentBirth];
+    basicInfoList = [Strings.name, Strings.IDCard, Strings.phoneNumber, Strings.sex, Strings.dateOfBirth, Strings.school];
     checkInfoList = [Strings.vision_livingEyeSight, Strings.vision_bareEyeSight, Strings.vision_eyeGlasses, Strings.vision_bestEyeSight, Strings.opto_diopter, Strings.opto_astigmatism, Strings.opto_astigmatismaxis, Strings.slit_conjunctiva, Strings.slit_cornea,Strings.slit_eyelid, Strings.slit_Hirschbergtest, Strings.slit_lens];
     slitExtraInfoList = [Strings.slit_exchange, Strings.slit_eyeballshivering];
 
@@ -83,8 +82,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     if(!widget.isArgsReceived){
       List<String> args = ModalRoute.of(context).settings.arguments;
       widget.test = args[0];
-      widget.patientName = args[2];
-      widget.dateOfBirth = args[3];
+      widget.profileID = args[1];
       widget.isReviewing = args[4];
       widget.isArgsReceived = true;
     }
@@ -143,8 +141,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                 constructTab(slitExtraInfoList, 'extra'),
                 Consultation(
                   isViewing: ((widget.isReviewing == 'true')? true : false),
-                  patientName: widget.patientName,
-                  dateOfBirth: widget.dateOfBirth,
+                  profileID: widget.profileID,
                 )
               ]
           )
@@ -225,7 +222,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           ),
 
           title: FutureBuilder<CheckInfo>(
-            future: getCheckInfo(isLeft, widget.patientName, widget.dateOfBirth),
+            future: getCheckInfo(isLeft, widget.profileID),
             builder: (context, rep){
               if(rep == null){
                 return Text('',);
@@ -317,37 +314,38 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                 ),
               ),
               title: FutureBuilder<BasicInfo>(
-                future: getBasicInfo(widget.patientName, widget.dateOfBirth),
+                future: getBasicInfo(widget.profileID),
                 builder: (context, rep){
                   if(rep == null){
                     return Text('',);
                   }
                   else if (rep.hasData){
-                    if (basicInfo == Strings.studentName){
+                    if (basicInfo == Strings.name){
                       return SizedBox(
                         child: Text((rep.data.name == null)?'':rep.data.name, textAlign: TextAlign.center,),
                       );
                     }
-                    else if (basicInfo == Strings.parentNumber){
+                    else if (basicInfo == Strings.phoneNumber){
                       return SizedBox(
                         child: Text((rep.data.number==null)?'':rep.data.number, textAlign: TextAlign.center,),
                       );
                     }
-                    else if (basicInfo == Strings.studentSex){
+                    else if (basicInfo == Strings.sex){
                       return SizedBox(
                         child: Text((rep.data.sex == null)?'':rep.data.sex, textAlign: TextAlign.center,),
                       );
                     }
-                    else if (basicInfo == Strings.studentBirth){
+                    else if (basicInfo == Strings.dateOfBirth){
                       return SizedBox(
                         child: Text((rep.data.birth == null)?'':rep.data.birth, textAlign: TextAlign.center,),
                       );
                     }
-                    else if (basicInfo == Strings.studentIDCard){
+                    else if (basicInfo == Strings.IDCard){
                       return SizedBox(
                         child: Text((rep.data.id == null)?'':rep.data.id, textAlign: TextAlign.center,),
                       );
                     }
+                    // TODO
                   }
                   else if (rep.hasError){
                     return Text("${rep.error}");
@@ -374,7 +372,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
             ),
           ),
           title: FutureBuilder<SlitExtraInfo>(
-            future: getSlitExtraInfo(widget.patientName, widget.dateOfBirth),
+            future: getSlitExtraInfo(widget.profileID),
             builder: (context, rep){
               if(rep == null){
                 return Text('',);

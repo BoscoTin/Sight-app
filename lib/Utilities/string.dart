@@ -103,11 +103,12 @@ class Strings{
   static const String noNeed = '不需要';
 
   // For patient data
-  static const String studentName = '学生姓名';
-  static const String parentNumber = '家長号码';
-  static const String studentSex = '学生性别';
-  static const String studentBirth = '出生日期';
-  static const String studentIDCard = '学生身份證';
+  static const String name = '姓名';
+  static const String phoneNumber = '电话号码';
+  static const String sex = '性别';
+  static const String dateOfBirth = '出生日期';
+  static const String IDCard = '身份证';
+  static const String school = '学校';
 
   static const String male = '男';
   static const String female = '女';

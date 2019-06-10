@@ -3,11 +3,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
-Future<CheckInfo> getCheckInfo(bool isLeft, String patientName, String dateOfBirth) async{
+Future<CheckInfo> getCheckInfo(bool isLeft, String patientID) async{
 
   try {
     final response = await http.get(
-        '${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}',
+        '${Constants.URL_RECORD}?patientIDCard=${patientID}',
         headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {

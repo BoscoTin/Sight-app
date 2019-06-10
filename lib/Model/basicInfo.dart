@@ -6,10 +6,10 @@ import 'package:myapp/Utilities/Constant.dart';
 /*
   # The function that will make use of the http.get method to do GET operation
 */
-Future<BasicInfo> getBasicInfo(String patientName, String dateOfBirth) async{
+Future<BasicInfo> getBasicInfo(String patientID) async{
   http.Response response;
   try{
-    response = await http.get('${Constants.URL_STU}?studentName=${patientName}&studentBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
+    response = await http.get('${Constants.URL_STU}?studentIDCard=${patientID}', headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {
       return BasicInfo.fromJson(json.decode(response.body));
@@ -30,8 +30,9 @@ class BasicInfo{
   final String sex;
   final String birth;
   final String id;
+  final String school;
 
-  BasicInfo({this.name, this.number,this.sex, this.birth, this.id});
+  BasicInfo({this.name, this.number,this.sex, this.birth, this.id, this.school});
 
   // Method that take a
   factory BasicInfo.fromJson(Map<String, dynamic> json) {
@@ -40,7 +41,8 @@ class BasicInfo{
       number: json['data'][0]['parentsNumber'],
       sex: json['data'][0]['studentSex'],
       birth: json['data'][0]['studentBirth'],
-      id: json['data'][0]['studentIDCard']
+      id: json['data'][0]['studentIDCard'],
+      school: json['data'][0]['studentSchool']
     );
   }
 
@@ -50,22 +52,30 @@ class BasicInfo{
       number: json['parentsNumber'],
       sex: json['studentSex'],
       birth: json['studentBirth'],
-      id: json['studentIDCard']
+      id: json['studentIDCard'],
+      school: json['studentSchool']
     );
   }
 }
 
-Future<List<BasicInfo>> getSameInfos(String name, String date) async{
+Future<List<BasicInfo>> getSameInfos(String name, String date, String school) async{
   http.Response response;
 
   String queryPath = Constants.URL_STU;
-  if(name != '' && date != ''){
-    queryPath += '?studentName=${name}&studentBirth=${date}';
-  } else if (name != ''){
-    queryPath += '?studentName=${name}';
-  } else if (date != ''){
-    queryPath += '?studentBirth=${date}';
-  } else return null;
+  if(name != null || date != null || school != null){
+    queryPath += '?';
+  }
+  // TODO: check entity name
+  if(name != null){
+    queryPath += 'studentName=${name}&';
+  }
+  if(date != null) {
+    queryPath += 'studentBirth=${date}&';
+  }
+  if(school != null){
+    queryPath += 'studentSchool=${school}&';
+  }
+  queryPath = queryPath.substring(0, queryPath.length - 1);
 
   try{
     response = await http.get(queryPath);

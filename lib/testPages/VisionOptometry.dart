@@ -214,7 +214,7 @@ class _VisionOptometryState extends State<VisionOptometry>{
                   right_vision_bestEyeSight: rightFieldControllers[Strings.vision_bestEyeSight].text
               );
               // Call the API
-              VisionTest newData = await createVisionTest(widget.patientName, widget.dateOfBirth, body: newVisionTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+              VisionTest newData = await createVisionTest(widget.profileID, body: newVisionTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
               if(newData != null) {
                 // show the following alert when the data is successfully submitted to the server
@@ -239,7 +239,7 @@ class _VisionOptometryState extends State<VisionOptometry>{
                 right_opto_astigmatism: rightFieldControllers[Strings.opto_astigmatism].text,
                 right_opto_astigmatismaxis: rightFieldControllers[Strings.opto_astigmatismaxis].text,
               );
-              OptTest newData = await createOptTest(widget.patientName, widget.dateOfBirth, newOptTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+              OptTest newData = await createOptTest(widget.profileID, newOptTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
               if(newData != null) {
                 // show the following alert when the data is successfully submitted to the server

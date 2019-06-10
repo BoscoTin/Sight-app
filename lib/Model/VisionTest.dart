@@ -11,9 +11,10 @@ import 'package:myapp/Utilities/Constant.dart';
   @return
   http.post
 */
-Future<VisionTest> createVisionTest(String patientName, String dateOfBirth, {Map<String, dynamic> body}) async {
+Future<VisionTest> createVisionTest(String patientID, {Map<String, dynamic> body}) async {
   try{
-    final response = await http.patch('${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}', body: body);
+    final response = await http.patch('${Constants.URL_RECORD}?patientIDCard=${patientID}', body: body);
+    print(response.body);
     print(response.statusCode);
 
     if (response.statusCode == 200) {
@@ -27,12 +28,11 @@ Future<VisionTest> createVisionTest(String patientName, String dateOfBirth, {Map
       return null;
     }
   } catch(e){
-    throw Exception(e);
+    return null;
   }
 }
 
 class VisionTest{
-  //final String patient_id;
   final String left_vision_livingEyeSight;
   final String right_vision_livingEyeSight;
   final String left_vision_bareEyeSight;
@@ -47,7 +47,6 @@ class VisionTest{
   // Convert the json of the content of the http response to a VisionTest object
   factory VisionTest.fromJson(Map<String, dynamic> json){
     return VisionTest(
-      //patient_id: json['patient_id'],
 
         left_vision_livingEyeSight: json['left_vision_livingEyeSight'],
         left_vision_bareEyeSight: json['left_vision_bareEyeSight'],
@@ -64,7 +63,6 @@ class VisionTest{
   // Convert the content of the VisionTest object into a map for inputing into create as body
   Map toMap(){
     var map = new Map<String, dynamic>();
-    //map['patient_id'] = patient_id;
 
     map['left_vision_livingEyeSight'] = left_vision_livingEyeSight;
     map['left_vision_bareEyeSight'] = left_vision_bareEyeSight;

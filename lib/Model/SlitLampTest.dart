@@ -3,10 +3,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
-Future<SlitlampTest> createSlitLampTest(String patientName, String dateOfBirth, Map body) async{
+Future<SlitlampTest> createSlitLampTest(String patientID, Map body) async{
   try{
-    return http.patch('${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}', body: body).then((http.Response response){
+    return http.patch('${Constants.URL_RECORD}?patientIDCard=${patientID}', body: body).then((http.Response response){
       final int statusCode = response.statusCode;
+
+      print(statusCode);
+      print(response.body);
 
       if (statusCode < 200 || statusCode > 400 || json == null){
         return null;
@@ -16,7 +19,7 @@ Future<SlitlampTest> createSlitLampTest(String patientName, String dateOfBirth, 
       return SlitlampTest.fromJson(repJson);
     });
   } catch(e){
-    throw Exception(e);
+    return null;
   }
 }
 

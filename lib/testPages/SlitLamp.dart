@@ -248,7 +248,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                 slit_exchange: getData(Strings.slit_exchange),
                 slit_eyeballshivering: getData(Strings.slit_eyeballshivering)
             );
-            SlitlampTest newData = await createSlitLampTest(widget.patientName, widget.dateOfBirth, newslitlampTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+            SlitlampTest newData = await createSlitLampTest(widget.profileID, newslitlampTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
             if(newData == null){
               /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN

@@ -96,17 +96,17 @@ class Functions{
               Navigator.of(context).pop(['true', infos[i].number]);
             },
             child: ListTile(
-              leading: Text(infos[i].number,
+              leading: Text(infos[i].name,
                 style: TextStyle(
                     fontSize: Constants.normalFontSize
                 ),
               ),
-              title: Text(infos[i].name,
+              title: Text(infos[i].birth,
                 style: TextStyle(
                     fontSize: Constants.normalFontSize
                 ),
               ),
-              subtitle: Text(infos[i].sex + ' ' + infos[i].birth,
+              subtitle: Text(infos[i].sex + ' ' + Strings.phoneNumber + ': ' + infos[i].number,
                 style: TextStyle(
                     fontSize: Constants.normalFontSize - 5
                 ),

@@ -10,12 +10,11 @@ class Consultation extends StatefulWidget{
   // judge whether the widget is in viewing mode or submitting mode
   bool isViewing;
 
-  String patientName;
-  String dateOfBirth;
+  String profileID;
   // submitting progress, default is confirm button
   String progress;
 
-  Consultation({Key key, @required this.isViewing, @required this.patientName, @required this.dateOfBirth}) : progress = Strings.confirm, super(key : key);
+  Consultation({Key key, @required this.isViewing, @required this.profileID}) : progress = Strings.confirm, super(key : key);
 
   @override
   _ConsultState createState() => _ConsultState();
@@ -106,7 +105,7 @@ class _ConsultState extends State<Consultation>{
 
     list.add(
       FutureBuilder<ConsultRecord>(
-        future: getConsultRecord(widget.patientName, widget.dateOfBirth),
+        future: getConsultRecord(widget.profileID),
           builder: (context, rep){
             if(rep.hasData){
               return(Column(
@@ -203,7 +202,7 @@ class _ConsultState extends State<Consultation>{
                 furtheropt: radioValue[Strings.con_furtheroptomery],
                 furtherreview: radioValue[Strings.con_furtherreview]
             );
-            ConsultRecord newConsult = await createConsultRecord(widget.patientName, widget.dateOfBirth, newConsultRecord.toMap()).timeout(const Duration(seconds: 10), onTimeout: () {return null;});
+            ConsultRecord newConsult = await createConsultRecord(widget.profileID, newConsultRecord.toMap()).timeout(const Duration(seconds: 10), onTimeout: () {return null;});
 
             if(newConsult == null){
               // CALL USER TO SUBMIT AGAIN

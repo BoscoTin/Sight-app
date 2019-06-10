@@ -4,9 +4,9 @@ import 'dart:convert';
 
 import 'package:myapp/Utilities/Constant.dart';
 
-Future<ConsultRecord> createConsultRecord(String patientName, String dateOfBirth, Map body) async{
+Future<ConsultRecord> createConsultRecord(String patientID, Map body) async{
    try{
-     return http.patch('${Constants.URL_RECORD}?patientName=${patientName}&patientBirth=${dateOfBirth}', body: body).then((http.Response response){
+     return http.patch('${Constants.URL_RECORD}?patientIDCard=${patientID}', body: body).then((http.Response response){
        final int statusCode = response.statusCode;
 
        if (statusCode < 200 || statusCode > 400 || json == null){
@@ -21,9 +21,9 @@ Future<ConsultRecord> createConsultRecord(String patientName, String dateOfBirth
    }
 }
 
-Future<ConsultRecord> getConsultRecord(String patientName, String dateOfBirth) async{
+Future<ConsultRecord> getConsultRecord(String patientID) async{
   try{
-    final response = await http.get('${Constants.URL_RECORD}?q={{"\$and": [{"patientName=":"${patientName}"}, {"patientBirth":"${dateOfBirth}"}]}}', headers: {"Accept": "application/json"});
+    final response = await http.get('${Constants.URL_RECORD}?patientIDCard=${patientID}', headers: {"Accept": "application/json"});
 
     if (response.statusCode == 200) {
       return ConsultRecord.fromJson(json.decode(response.body));

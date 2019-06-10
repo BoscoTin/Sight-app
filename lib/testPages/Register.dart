@@ -21,12 +21,13 @@ class Register extends StatefulWidget{
 
 class _RegisterState extends State<Register>{
   // textfield controllers
-  TextEditingController studentNameController;
-  TextEditingController studentIDController;
-  TextEditingController parentNumberController;
+  TextEditingController nameController;
+  TextEditingController idController;
+  TextEditingController phoneNumberController;
+  TextEditingController schoolController;
 
-  String studentSex;
-  DateTime studentDateOfBirth;
+  String sex;
+  DateTime dateOfBirth;
 
   /// define back press action
   Future<bool> Function(BuildContext) backPressed = (BuildContext context) => Functions.onBackPressedAlert(
@@ -39,11 +40,12 @@ class _RegisterState extends State<Register>{
   @override
   void initState(){
     super.initState();
-    studentNameController = new TextEditingController();
-    studentIDController = new TextEditingController();
-    parentNumberController = new TextEditingController();
-    studentSex = "";
-    studentDateOfBirth = new DateTime.now();
+    nameController = new TextEditingController();
+    idController = new TextEditingController();
+    phoneNumberController = new TextEditingController();
+    sex = '';
+    schoolController = new TextEditingController();
+    dateOfBirth = new DateTime.now();
   }
 
   @override
@@ -72,11 +74,11 @@ class _RegisterState extends State<Register>{
             body: ListView(
               padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 40.0),
               children: <Widget>[
-                /// student name tile
+                /// name tile
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentName,
+                    leading: Text( Strings.name,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -89,7 +91,7 @@ class _RegisterState extends State<Register>{
                           color: Theme.of(context).buttonColor
                         )
                       ),
-                      controller: studentNameController,
+                      controller: nameController,
                       // Set the keyboard
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
@@ -99,11 +101,11 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
 
-                /// student ID card number tile
+                /// ID card number tile
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentIDCard,
+                    leading: Text( Strings.IDCard,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -116,7 +118,7 @@ class _RegisterState extends State<Register>{
                               color: Theme.of(context).buttonColor
                           )
                       ),
-                      controller: studentIDController,
+                      controller: idController,
                       // Set the keyboard
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
@@ -127,11 +129,11 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
 
-                /// student parent number tile
+                /// phone number tile
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.parentNumber,
+                    leading: Text( Strings.phoneNumber,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -144,7 +146,7 @@ class _RegisterState extends State<Register>{
                               color: Theme.of(context).buttonColor
                           )
                       ),
-                      controller: parentNumberController,
+                      controller: phoneNumberController,
                       // Set the keyboard
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
@@ -159,7 +161,7 @@ class _RegisterState extends State<Register>{
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentSex,
+                    leading: Text( Strings.sex,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -173,16 +175,16 @@ class _RegisterState extends State<Register>{
                           Expanded(
                             child: GestureDetector(
                               onTap: (){
-                                if(studentSex == Strings.male){
-                                  studentSex = "";
+                                if(sex == Strings.male){
+                                  sex = "";
                                 }
-                                else studentSex = Strings.male;
+                                else sex = Strings.male;
 
                                 setState(() {});
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: (studentSex == Strings.male) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
+                                  color: (sex == Strings.male) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
                                 ),
                                 child: Center(child: Text(Strings.male,
                                   style: TextStyle(fontSize: Constants.normalFontSize),
@@ -195,16 +197,16 @@ class _RegisterState extends State<Register>{
                           Expanded(
                             child: GestureDetector(
                               onTap: (){
-                                if(studentSex == Strings.female){
-                                  studentSex = "";
+                                if(sex == Strings.female){
+                                  sex = "";
                                 }
-                                else studentSex = Strings.female;
+                                else sex = Strings.female;
 
                                 setState(() {});
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: (studentSex == Strings.female) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
+                                  color: (sex == Strings.female) ? Theme.of(context).hintColor: Theme.of(context).disabledColor,
                                 ),
 
                                 child:  Center(child: Text(Strings.female,
@@ -224,7 +226,7 @@ class _RegisterState extends State<Register>{
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentBirth,
+                    leading: Text( Strings.dateOfBirth,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -232,11 +234,38 @@ class _RegisterState extends State<Register>{
 
                     title: GestureDetector(
                       child: Text(
-                        DateFormat('yyyy-MM-dd').format(studentDateOfBirth),
+                        DateFormat('yyyy-MM-dd').format(dateOfBirth),
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: Constants.normalFontSize),
                       ),
                       onTap: () => _selectDate(context),
+                    ),
+                  ),
+                ),
+
+                /// Textfield for school info
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.school,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: Strings.typeHere,
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).buttonColor
+                          )
+                      ),
+                      controller: schoolController,
+                      // Set the keyboard
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: Constants.normalFontSize),
                     ),
                   ),
                 ),
@@ -268,19 +297,22 @@ class _RegisterState extends State<Register>{
                       widget.progress = Strings.submitting;
                     });
                     PatientInfo newPatientInfo = new PatientInfo(
-                        studentName: studentNameController.text,
-                        studentIDCard: studentIDController.text,
-                        parentNumber: parentNumberController.text,
-                        studentBirth: DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
-                        studentSex: studentSex
+                        name: nameController.text,
+                        id: idController.text,
+                        phoneNumber: phoneNumberController.text,
+                        birth: DateFormat('yyyy.MM.dd').format(dateOfBirth),
+                        sex: sex,
+                        school: schoolController.text
                     );
                     PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
                     if(patientinfo != null){
                       // Write to check-record database
                       PatientID newPatientID = new PatientID(
-                          patientName: studentNameController.text,
-                          patientBirth: DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
+                          patientName: nameController.text,
+                          patientBirth: DateFormat('yyyy.MM.dd').format(dateOfBirth),
+                          patientID: patientinfo.id,
+                          patientSchool: patientinfo.school
                       );
                       PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
@@ -298,10 +330,10 @@ class _RegisterState extends State<Register>{
 
                     // clear screen and restore to default
                     setState(() {
-                      //studentIDController.text = '';
-                      //studentNameController.text = '';
-                      //studentSex = '';
-                      //studentDateOfBirth = DateTime.now();
+                      idController.text = '';
+                      nameController.text = '';
+                      sex = '';
+                      phoneNumberController.text = '';
                       widget.progress = Strings.confirm;
                     });
                   },
@@ -319,14 +351,14 @@ class _RegisterState extends State<Register>{
   Future<Null> _selectDate(BuildContext context) async{
     final DateTime _picked = await showDatePicker(
         context: context,
-        initialDate: studentDateOfBirth,
+        initialDate: dateOfBirth,
         firstDate: new DateTime(1900),
         lastDate: DateTime.now()
     );
 
     if(_picked != null) {
       setState(() {
-        studentDateOfBirth = _picked;
+        dateOfBirth = _picked;
       });
     }
   }

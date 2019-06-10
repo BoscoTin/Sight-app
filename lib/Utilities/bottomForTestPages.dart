@@ -31,7 +31,7 @@ class CustomBottomArea extends StatelessWidget implements PreferredSizeWidget{
                   borderRadius: BorderRadius.circular(Constants.boxBorderRadius)
               ),
 
-              child: Text(Strings.studentBirth + ': ' + dateOfBirth,
+              child: Text(Strings.dateOfBirth + ': ' + dateOfBirth,
                 style: TextStyle(
                   fontSize: Constants.appBarBottomFontSize,
                 ),

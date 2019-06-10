@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<PatientInfo> createPatientInfo(Map body) async{
-  print(body);
-
   try{
     return http.post(Constants.URL_STU, body: body).then((http.Response response){
+      print(json.decode(response.body));
+
       final int statusCode = response.statusCode;
 
       if (statusCode < 200 || statusCode >= 400 || json == null){
@@ -23,31 +23,34 @@ Future<PatientInfo> createPatientInfo(Map body) async{
 }
 
 class PatientInfo{
-  final String studentName;
-  final String parentNumber;
-  final String studentSex;
-  final String studentBirth;
-  final String studentIDCard;
+  final String name;
+  final String phoneNumber;
+  final String sex;
+  final String birth;
+  final String id;
+  final String school;
 
-  PatientInfo({this.studentName, this.studentIDCard, this.parentNumber, this.studentBirth, this.studentSex});
+  PatientInfo({this.name, this.phoneNumber, this.sex, this.birth, this.id, this.school});
 
   factory PatientInfo.fromJson(Map<String, dynamic> json){
     return PatientInfo(
-        studentName: json['studentName'],
-        studentBirth: json['studentBirth'],
-        parentNumber: json['parentsNumber'],
-        studentSex: json['studentSex'],
-        studentIDCard: json['studentIDCard']
+        name: json['studentName'],
+        birth: json['studentBirth'],
+        phoneNumber: json['parentsNumber'],
+        sex: json['studentSex'],
+        id: json['studentIDCard'],
+        school: json['studentSchool']
     );
   }
 
   Map toMap(){
     var map = new Map<String, dynamic>();
-    map['studentName'] = studentName;
-    map['parentsNumber'] = parentNumber;
-    map['studentBirth'] = studentBirth;
-    map['studentSex'] = studentSex;
-    map['studentIDCard'] = studentIDCard;
+    map['studentName'] = name;
+    map['parentsNumber'] = phoneNumber;
+    map['studentBirth'] = birth;
+    map['studentSex'] = sex;
+    map['studentIDCard'] = id;
+    map['studentSchool'] = school;
 
     return map;
   }
@@ -69,13 +72,17 @@ Future<PatientID> createPatientID(Map body) async{
 class PatientID{
   final String patientName;
   final String patientBirth;
+  final String patientID;
+  final String patientSchool;
 
-  PatientID({this.patientName, this.patientBirth});
+  PatientID({this.patientName, this.patientBirth, this.patientID, this.patientSchool});
 
   factory PatientID.fromJson(Map<String, dynamic> json){
     return PatientID(
         patientName: json['patientName'],
-        patientBirth: json['patientBirth']
+        patientBirth: json['patientBirth'],
+        patientID: json['patientIDCard'],
+        patientSchool: json['patientSchool']
     );
   }
 
@@ -83,6 +90,8 @@ class PatientID{
     var map = new Map<String, dynamic>();
     map['patientName'] = patientName;
     map['patientBirth'] = patientBirth;
+    map['patientID'] = patientID;
+    map['patientSchool'] = patientSchool;
 
     return map;
   }

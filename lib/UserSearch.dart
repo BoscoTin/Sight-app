@@ -29,6 +29,7 @@ class UserSearch extends StatefulWidget{
 
 class _UserSearchState extends State<UserSearch>{
   TextEditingController patientNameController;
+  TextEditingController schoolController;
   DateTime studentDateOfBirth;
 
   /// define back press action
@@ -42,6 +43,7 @@ class _UserSearchState extends State<UserSearch>{
   @override
   void initState(){
     patientNameController = new TextEditingController();
+    schoolController = new TextEditingController();
     studentDateOfBirth = new DateTime.now();
     super.initState();
   }
@@ -83,7 +85,7 @@ class _UserSearchState extends State<UserSearch>{
               Card(
                 color: Theme.of(context).disabledColor,
                 child: ListTile(
-                  leading: Text( Strings.studentName,
+                  leading: Text( Strings.name,
                     style: TextStyle(
                         fontSize: Constants.normalFontSize
                     ),
@@ -112,7 +114,7 @@ class _UserSearchState extends State<UserSearch>{
               Card(
                 color: Theme.of(context).disabledColor,
                 child: ListTile(
-                  leading: Text( Strings.studentBirth,
+                  leading: Text( Strings.dateOfBirth,
                     style: TextStyle(
                         fontSize: Constants.normalFontSize
                     ),
@@ -129,6 +131,35 @@ class _UserSearchState extends State<UserSearch>{
                 ),
               ),
 
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
+
+              /// Textfield for school info
+              Card(
+                color: Theme.of(context).disabledColor,
+                child: ListTile(
+                  leading: Text( Strings.school,
+                    style: TextStyle(
+                        fontSize: Constants.normalFontSize
+                    ),
+                  ),
+
+                  title: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: Strings.typeHere,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).buttonColor
+                        )
+                    ),
+                    controller: schoolController,
+                    // Set the keyboard
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: Constants.normalFontSize),
+                  ),
+                ),
+              ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
 
@@ -162,7 +193,8 @@ class _UserSearchState extends State<UserSearch>{
 
                   String patientName = patientNameController.text;
                   String dateOfBirth = DateFormat('yyyy.MM.dd').format(studentDateOfBirth);
-                  List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth).timeout(const Duration(seconds: 10), onTimeout: () => null );
+                  String school = schoolController.text;
+                  List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth, school).timeout(const Duration(seconds: 10), onTimeout: () => null );
 
                   /// set up navigating route
                   String route;
@@ -213,6 +245,7 @@ class _UserSearchState extends State<UserSearch>{
                   setState(() {
                     widget.progress = Strings.searchButton;
                     patientNameController.text = '';
+                    schoolController.text = '';
                   });
                 },
               ),
