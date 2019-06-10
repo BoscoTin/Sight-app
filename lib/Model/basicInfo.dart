@@ -28,25 +28,28 @@ class BasicInfo{
   final String number;
   final String sex;
   final String birth;
+  final String id;
 
-  BasicInfo({this.name, this.number,this.sex, this.birth});
+  BasicInfo({this.name, this.number,this.sex, this.birth, this.id});
 
   // Method that take a
   factory BasicInfo.fromJson(Map<String, dynamic> json) {
     return BasicInfo(
       name: json['data'][0]['studentName'],
-      number: json['data'][0]['studentNumber'],
+      number: json['data'][0]['parentNumber'],
       sex: json['data'][0]['studentSex'],
       birth: json['data'][0]['studentBirth'],
+      id: json['data'][0]['studentIDCard']
     );
   }
 
   factory BasicInfo.fromList(Map<String, dynamic> json){
     return BasicInfo(
       name: json['studentName'],
-      number: json['studentNumber'],
+      number: json['parentNumber'],
       sex: json['studentSex'],
       birth: json['studentBirth'],
+      id: json['studentIDCard']
     );
   }
 }

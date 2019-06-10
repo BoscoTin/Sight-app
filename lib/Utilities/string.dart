@@ -104,9 +104,10 @@ class Strings{
 
   // For patient data
   static const String studentName = '学生姓名';
-  static const String studentNumber = '学生编号';
+  static const String parentNumber = '家長编号';
   static const String studentSex = '学生性别';
   static const String studentBirth = '出生日期';
+  static const String studentIDCard = '学生身份證';
 
   static const String male = '男';
   static const String female = '女';

@@ -23,6 +23,7 @@ class _RegisterState extends State<Register>{
   // textfield controllers
   TextEditingController studentNameController;
   TextEditingController studentIDController;
+  TextEditingController parentNumberController;
 
   String studentSex;
   DateTime studentDateOfBirth;
@@ -40,6 +41,7 @@ class _RegisterState extends State<Register>{
     super.initState();
     studentNameController = new TextEditingController();
     studentIDController = new TextEditingController();
+    parentNumberController = new TextEditingController();
     studentSex = "";
     studentDateOfBirth = new DateTime.now();
   }
@@ -97,11 +99,39 @@ class _RegisterState extends State<Register>{
                   ),
                 ),
 
-                /// student ID tile
+                /// student ID card number tile
                 Card(
                   color: Theme.of(context).disabledColor,
                   child: ListTile(
-                    leading: Text( Strings.studentNumber,
+                    leading: Text( Strings.studentIDCard,
+                      style: TextStyle(
+                          fontSize: Constants.normalFontSize
+                      ),
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: Strings.typeHere,
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).buttonColor
+                          )
+                      ),
+                      controller: studentIDController,
+                      // Set the keyboard
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: Constants.normalFontSize),
+
+                    ),
+                  ),
+                ),
+
+                /// student parent number tile
+                Card(
+                  color: Theme.of(context).disabledColor,
+                  child: ListTile(
+                    leading: Text( Strings.parentNumber,
                       style: TextStyle(
                           fontSize: Constants.normalFontSize
                       ),
@@ -114,7 +144,7 @@ class _RegisterState extends State<Register>{
                               color: Theme.of(context).buttonColor
                           )
                       ),
-                      controller: studentIDController,
+                      controller: parentNumberController,
                       // Set the keyboard
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
@@ -239,7 +269,8 @@ class _RegisterState extends State<Register>{
                     });
                     PatientInfo newPatientInfo = new PatientInfo(
                         studentName: studentNameController.text,
-                        studentNumber: studentIDController.text,
+                        studentIDCard: studentIDController.text,
+                        parentNumber: parentNumberController.text,
                         studentBirth: DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
                         studentSex: studentSex
                     );

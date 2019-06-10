@@ -22,27 +22,30 @@ Future<PatientInfo> createPatientInfo(Map body) async{
 
 class PatientInfo{
   final String studentName;
-  final String studentNumber;
+  final String parentNumber;
   final String studentSex;
   final String studentBirth;
+  final String studentIDCard;
 
-  PatientInfo({this.studentName, this.studentNumber, this.studentBirth, this.studentSex});
+  PatientInfo({this.studentName, this.studentIDCard, this.parentNumber, this.studentBirth, this.studentSex});
 
   factory PatientInfo.fromJson(Map<String, dynamic> json){
     return PatientInfo(
         studentName: json['studentName'],
         studentBirth: json['studentBirth'],
-        studentNumber: json['studentNumber'],
-        studentSex: json['studentSex']
+        parentNumber: json['parentNumber'],
+        studentSex: json['studentSex'],
+        studentIDCard: json['studentIDCard']
     );
   }
 
   Map toMap(){
     var map = new Map<String, dynamic>();
     map['studentName'] = studentName;
-    map['studentNumber'] = studentNumber;
+    map['parentNumber'] = parentNumber;
     map['studentBirth'] = studentBirth;
     map['studentSex'] = studentSex;
+    map['studentIDCard'] = studentIDCard;
 
     return map;
   }

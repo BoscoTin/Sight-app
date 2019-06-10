@@ -50,7 +50,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     _tabController = TabController(vsync: this, length: Constants.consultationTabNumber);
 
     /// Construct the data types
-    basicInfoList = [Strings.studentName, Strings.studentNumber, Strings.studentSex, Strings.studentBirth];
+    basicInfoList = [Strings.studentName, Strings.studentIDCard, Strings.parentNumber, Strings.studentSex, Strings.studentBirth];
     checkInfoList = [Strings.vision_livingEyeSight, Strings.vision_bareEyeSight, Strings.vision_eyeGlasses, Strings.vision_bestEyeSight, Strings.opto_diopter, Strings.opto_astigmatism, Strings.opto_astigmatismaxis, Strings.slit_conjunctiva, Strings.slit_cornea,Strings.slit_eyelid, Strings.slit_Hirschbergtest, Strings.slit_lens];
     slitExtraInfoList = [Strings.slit_exchange, Strings.slit_eyeballshivering];
 
@@ -328,7 +328,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                         child: Text((rep.data.name == null)?'':rep.data.name, textAlign: TextAlign.center,),
                       );
                     }
-                    else if (basicInfo == Strings.studentNumber){
+                    else if (basicInfo == Strings.parentNumber){
                       return SizedBox(
                         child: Text(rep.data.number, textAlign: TextAlign.center,),
                       );
@@ -341,6 +341,11 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                     else if (basicInfo == Strings.studentBirth){
                       return SizedBox(
                         child: Text(rep.data.birth, textAlign: TextAlign.center,),
+                      );
+                    }
+                    else if (basicInfo == Strings.studentIDCard){
+                      return SizedBox(
+                        child: Text(rep.data.id, textAlign: TextAlign.center,),
                       );
                     }
                   }
