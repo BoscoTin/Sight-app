@@ -276,26 +276,12 @@ class _RegisterState extends State<Register>{
                     );
                     PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-                    if(patientinfo != null){
-                      // Write to check-record database
-                      PatientID newPatientID = new PatientID(
-                          patient_id: studentIDController.text
-                      );
-                      PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+                    print(patientinfo);
 
-                      if(patientid != null) {
+                    if(patientinfo != null){
                         // Notice the user that the patient has been added
                         Functions.showAlert(context,
-                            Strings.successRecord + '\n' + Strings.profileID +
-                                ' ' + patientid.patient_id, Functions.nothing);
-                      } else{
-                        /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN
-                        Functions.showAlert(
-                          context,
-                          Strings.cannotSubmit,
-                          Functions.nothing
-                        );
-                      }
+                            Strings.successRecord + '\n', Functions.nothing);
                     } else{
                       /// CANNOT SUBMIT, SHOW ALERT AND CALL USER TO TRY AGAIN
                       Functions.showAlert(
@@ -307,10 +293,10 @@ class _RegisterState extends State<Register>{
 
                     // clear screen and restore to default
                     setState(() {
-                      studentIDController.text = '';
-                      studentNameController.text = '';
-                      studentSex = '';
-                      studentDateOfBirth = DateTime.now();
+                      //studentIDController.text = '';
+                      //studentNameController.text = '';
+                      //studentSex = '';
+                      //studentDateOfBirth = DateTime.now();
                       widget.progress = Strings.confirm;
                     });
                   },

@@ -4,9 +4,12 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<PatientInfo> createPatientInfo(Map body) async{
+  
   try{
     return http.post(Constants.URL_STU, body: body).then((http.Response response){
       final int statusCode = response.statusCode;
+
+      print(statusCode);
 
       if (statusCode < 200 || statusCode > 400 || json == null){
         return null;
