@@ -183,8 +183,6 @@ class _UserSearchState extends State<UserSearch>{
                   }
 
                   if(samePplList != null) {
-                    print(samePplList);
-
                     if (samePplList.length > 1) {
                       /// more than one people have same name and same birth
                       List<String> navigate = await Functions.chooseList(context, samePplList);

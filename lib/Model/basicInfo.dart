@@ -9,7 +9,9 @@ import 'package:myapp/Utilities/Constant.dart';
 Future<BasicInfo> getBasicInfo(String patientName, String dateOfBirth) async{
   http.Response response;
   try{
-    response = await http.get('${Constants.URL_STU}?patientName=${patientName}&patientBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
+    response = await http.get('${Constants.URL_STU}?studentName=${patientName}&studentBirth=${dateOfBirth}', headers: {"Accept": "application/json"});
+
+    print(response.statusCode);
     if (response.statusCode == 200) {
       return BasicInfo.fromJson(json.decode(response.body));
     } else {
@@ -39,7 +41,7 @@ class BasicInfo{
       number: json['data'][0]['parentNumber'],
       sex: json['data'][0]['studentSex'],
       birth: json['data'][0]['studentBirth'],
-      id: json['data'][0]['studentIDCard']
+      //id: json['data'][0]['studentIDCard']
     );
   }
 
@@ -49,7 +51,7 @@ class BasicInfo{
       number: json['parentNumber'],
       sex: json['studentSex'],
       birth: json['studentBirth'],
-      id: json['studentIDCard']
+      //id: json['studentIDCard']
     );
   }
 }
@@ -57,21 +59,19 @@ class BasicInfo{
 Future<List<BasicInfo>> getSameInfos(String name, String date) async{
   http.Response response;
 
-  date = date.replaceAll('.', '-');
-
   String queryPath = Constants.URL_STU;
   if(name != '' && date != ''){
-    queryPath += '?patientName=${name}&patientBirth=${date}';
+    queryPath += '?studentName=${name}&studentBirth=${date}';
   } else if (name != ''){
-    queryPath += '?patientName=${name}';
+    queryPath += '?studentName=${name}';
   } else if (date != ''){
-    queryPath += '?patientBirth=${date}';
+    queryPath += '?studentBirth=${date}';
   } else return null;
-
-  print(queryPath);
 
   try{
     response = await http.get(queryPath);
+    print(response.statusCode);
+    print(queryPath);
     if (response.statusCode == 200) {
       return samePplFromJson(json.decode(response.body));
     } else {

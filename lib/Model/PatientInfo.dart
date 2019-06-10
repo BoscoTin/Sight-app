@@ -4,14 +4,13 @@ import 'dart:convert';
 import 'package:myapp/Utilities/Constant.dart';
 
 Future<PatientInfo> createPatientInfo(Map body) async{
-  
+  print(body);
+
   try{
     return http.post(Constants.URL_STU, body: body).then((http.Response response){
       final int statusCode = response.statusCode;
 
-      print(statusCode);
-
-      if (statusCode < 200 || statusCode > 400 || json == null){
+      if (statusCode < 200 || statusCode >= 400 || json == null){
         return null;
       }
       final rep = json.decode(response.body);
@@ -36,7 +35,7 @@ class PatientInfo{
     return PatientInfo(
         studentName: json['studentName'],
         studentBirth: json['studentBirth'],
-        parentNumber: json['parentNumber'],
+        parentNumber: json['parentsNumber'],
         studentSex: json['studentSex'],
         studentIDCard: json['studentIDCard']
     );
@@ -45,7 +44,7 @@ class PatientInfo{
   Map toMap(){
     var map = new Map<String, dynamic>();
     map['studentName'] = studentName;
-    map['parentNumber'] = parentNumber;
+    map['parentsNumber'] = parentNumber;
     map['studentBirth'] = studentBirth;
     map['studentSex'] = studentSex;
     map['studentIDCard'] = studentIDCard;
@@ -58,7 +57,7 @@ Future<PatientID> createPatientID(Map body) async{
   return http.post(Constants.URL_RECORD, body: body).then((http.Response response){
     final int statusCode = response.statusCode;
 
-    if (statusCode < 200 || statusCode > 400 || json == null){
+    if (statusCode < 200 || statusCode >= 400 || json == null){
       return null;
     }
     final rep = json.decode(response.body);
@@ -68,19 +67,22 @@ Future<PatientID> createPatientID(Map body) async{
 }
 
 class PatientID{
-  final String patient_id;
+  final String patientName;
+  final String patientBirth;
 
-  PatientID({this.patient_id});
+  PatientID({this.patientName, this.patientBirth});
 
   factory PatientID.fromJson(Map<String, dynamic> json){
     return PatientID(
-        patient_id: json['patient_id']
+        patientName: json['patientName'],
+        patientBirth: json['patientBirth']
     );
   }
 
   Map toMap() {
     var map = new Map<String, dynamic>();
-    map['patient_id'] = patient_id;
+    map['patientName'] = patientName;
+    map['patientBirth'] = patientBirth;
 
     return map;
   }

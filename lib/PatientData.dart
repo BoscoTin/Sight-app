@@ -330,7 +330,7 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                     }
                     else if (basicInfo == Strings.parentNumber){
                       return SizedBox(
-                        child: Text(rep.data.number, textAlign: TextAlign.center,),
+                        child: Text((rep.data.number==null)?'':rep.data.sex, textAlign: TextAlign.center,),
                       );
                     }
                     else if (basicInfo == Strings.studentSex){
@@ -340,12 +340,12 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                     }
                     else if (basicInfo == Strings.studentBirth){
                       return SizedBox(
-                        child: Text(rep.data.birth, textAlign: TextAlign.center,),
+                        child: Text((rep.data.birth == null)?'':rep.data.birth, textAlign: TextAlign.center,),
                       );
                     }
                     else if (basicInfo == Strings.studentIDCard){
                       return SizedBox(
-                        child: Text(rep.data.id, textAlign: TextAlign.center,),
+                        child: Text((rep.data.id == null)?'':rep.data.id, textAlign: TextAlign.center,),
                       );
                     }
                   }

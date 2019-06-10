@@ -276,10 +276,15 @@ class _RegisterState extends State<Register>{
                     );
                     PatientInfo patientinfo = await createPatientInfo(newPatientInfo.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
 
-                    print(patientinfo);
-
                     if(patientinfo != null){
-                        // Notice the user that the patient has been added
+                      // Write to check-record database
+                      PatientID newPatientID = new PatientID(
+                          patientName: studentNameController.text,
+                          patientBirth: DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
+                      );
+                      PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+
+                      // Notice the user that the patient has been added
                         Functions.showAlert(context,
                             Strings.successRecord + '\n', Functions.nothing);
                     } else{
