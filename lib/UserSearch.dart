@@ -44,7 +44,7 @@ class _UserSearchState extends State<UserSearch>{
   void initState(){
     patientNameController = new TextEditingController();
     schoolController = new TextEditingController();
-    studentDateOfBirth = new DateTime.now();
+    studentDateOfBirth = null;
     super.initState();
   }
 
@@ -122,7 +122,7 @@ class _UserSearchState extends State<UserSearch>{
 
                   title: GestureDetector(
                     child: Text(
-                      DateFormat('yyyy.MM.dd').format(studentDateOfBirth),
+                        (studentDateOfBirth != null)? DateFormat('yyyy.MM.dd').format(studentDateOfBirth): '',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: Constants.normalFontSize),
                     ),
@@ -192,7 +192,7 @@ class _UserSearchState extends State<UserSearch>{
                   });
 
                   String patientName = patientNameController.text;
-                  String dateOfBirth = DateFormat('yyyy.MM.dd').format(studentDateOfBirth);
+                  String dateOfBirth = (studentDateOfBirth == null)? '' : DateFormat('yyyy.MM.dd').format(studentDateOfBirth);
                   String school = schoolController.text;
                   List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth, school).timeout(const Duration(seconds: 10), onTimeout: () => null );
 
@@ -259,7 +259,7 @@ class _UserSearchState extends State<UserSearch>{
   Future<Null> _selectDate(BuildContext context) async{
     final DateTime _picked = await showDatePicker(
         context: context,
-        initialDate: studentDateOfBirth,
+        initialDate: new DateTime(2000),
         firstDate: new DateTime(1900),
         lastDate: DateTime.now()
     );

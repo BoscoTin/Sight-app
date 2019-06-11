@@ -77,6 +77,8 @@ Future<List<BasicInfo>> getSameInfos(String name, String date, String school) as
   }
   queryPath = queryPath.substring(0, queryPath.length - 1);
 
+  if(queryPath == Constants.URL_STU) return null;
+
   try{
     response = await http.get(queryPath);
     if (response.statusCode == 200) {
