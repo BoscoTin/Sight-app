@@ -62,19 +62,20 @@ Future<List<BasicInfo>> getSameInfos(String name, String date, String school) as
   http.Response response;
 
   String queryPath = Constants.URL_STU;
-  if(name != null || date != null || school != null){
+  if(name != '' || date != '' || school != ''){
     queryPath += '?';
   }
   // TODO: check entity name
-  if(name != null){
+  if(name != ''){
     queryPath += 'studentName=${name}&';
   }
-  if(date != null) {
+  if(date != '') {
     queryPath += 'studentBirth=${date}&';
   }
-  if(school != null){
+  if(school != ''){
     queryPath += 'studentSchool=${school}&';
   }
+  print(queryPath);
   queryPath = queryPath.substring(0, queryPath.length - 1);
 
   try{

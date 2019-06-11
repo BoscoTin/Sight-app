@@ -6,8 +6,6 @@ import 'package:myapp/Utilities/Constant.dart';
 Future<PatientInfo> createPatientInfo(Map body) async{
   try{
     return http.post(Constants.URL_STU, body: body).then((http.Response response){
-      print(json.decode(response.body));
-
       final int statusCode = response.statusCode;
 
       if (statusCode < 200 || statusCode >= 400 || json == null){
@@ -57,6 +55,7 @@ class PatientInfo{
 }
 
 Future<PatientID> createPatientID(Map body) async{
+  print(body);
   return http.post(Constants.URL_RECORD, body: body).then((http.Response response){
     final int statusCode = response.statusCode;
 
@@ -90,7 +89,7 @@ class PatientID{
     var map = new Map<String, dynamic>();
     map['patientName'] = patientName;
     map['patientBirth'] = patientBirth;
-    map['patientID'] = patientID;
+    map['patientIDCard'] = patientID;
     map['patientSchool'] = patientSchool;
 
     return map;

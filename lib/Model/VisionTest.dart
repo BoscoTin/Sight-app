@@ -13,6 +13,7 @@ import 'package:myapp/Utilities/Constant.dart';
 */
 Future<VisionTest> createVisionTest(String patientID, {Map<String, dynamic> body}) async {
   try{
+    print(Constants.URL_RECORD + '?patientIDCard=' + patientID);
     final response = await http.patch('${Constants.URL_RECORD}?patientIDCard=${patientID}', body: body);
     print(response.body);
     print(response.statusCode);

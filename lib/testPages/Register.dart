@@ -311,7 +311,7 @@ class _RegisterState extends State<Register>{
                       PatientID newPatientID = new PatientID(
                           patientName: nameController.text,
                           patientBirth: DateFormat('yyyy.MM.dd').format(dateOfBirth),
-                          patientID: patientinfo.id,
+                          patientID: idController.text,
                           patientSchool: patientinfo.school
                       );
                       PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });

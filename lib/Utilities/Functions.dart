@@ -93,7 +93,7 @@ class Functions{
 
           child: GestureDetector(
             onTap: (){
-              Navigator.of(context).pop(['true', infos[i].number]);
+              Navigator.of(context).pop(['true', infos[i].id]);
             },
             child: ListTile(
               leading: Text(infos[i].name,
