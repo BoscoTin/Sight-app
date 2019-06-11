@@ -75,13 +75,10 @@ Future<List<BasicInfo>> getSameInfos(String name, String date, String school) as
   if(school != ''){
     queryPath += 'studentSchool=${school}&';
   }
-  print(queryPath);
   queryPath = queryPath.substring(0, queryPath.length - 1);
 
   try{
     response = await http.get(queryPath);
-    print(response.statusCode);
-    print(queryPath);
     if (response.statusCode == 200) {
       return samePplFromJson(json.decode(response.body));
     } else {

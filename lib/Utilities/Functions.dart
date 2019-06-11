@@ -93,7 +93,7 @@ class Functions{
 
           child: GestureDetector(
             onTap: (){
-              Navigator.of(context).pop(['true', infos[i].id]);
+              Navigator.of(context).pop(['true', infos[i].id, infos[i].name, infos[i].birth]);
             },
             child: ListTile(
               leading: Text(infos[i].name,
@@ -101,12 +101,12 @@ class Functions{
                     fontSize: Constants.normalFontSize
                 ),
               ),
-              title: Text(infos[i].birth,
+              title: Text(infos[i].id,
                 style: TextStyle(
                     fontSize: Constants.normalFontSize
                 ),
               ),
-              subtitle: Text(infos[i].sex + ' ' + Strings.phoneNumber + ': ' + infos[i].number,
+              subtitle: Text(infos[i].sex + ' ' + infos[i].number,
                 style: TextStyle(
                     fontSize: Constants.normalFontSize - 5
                 ),
