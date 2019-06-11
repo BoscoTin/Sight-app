@@ -268,7 +268,7 @@ class _SlitLampState extends State<SlitLamp> with SingleTickerProviderStateMixin
                       (BuildContext context){
                     Navigator.of(context).pop();
                     Navigator.pushNamed(context, '/reviewProfile',
-                      arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, 'false'],
+                      arguments: [Strings.reviewingProfile, widget.profileID, widget.patientName, widget.dateOfBirth, 'false'],
                     );
                   });
             }

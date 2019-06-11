@@ -8,8 +8,8 @@ Future<OptTest> createOptTest(String patientID, Map<String, dynamic> body) async
     return http.patch('${Constants.URL_RECORD}?patientIDCard=${patientID}', body: body).then((http.Response response) {
       final int statusCode = response.statusCode;
 
-      print(statusCode);
-      print(response.body);
+      //print(statusCode);
+      //print(response.body);
 
       if (statusCode < 200 || statusCode > 400 || json == null){
         return null;

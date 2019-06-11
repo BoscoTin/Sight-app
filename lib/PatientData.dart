@@ -345,7 +345,11 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
                         child: Text((rep.data.id == null)?'':rep.data.id, textAlign: TextAlign.center,),
                       );
                     }
-                    // TODO
+                    else if (basicInfo == Strings.school){
+                      return SizedBox(
+                        child: Text((rep.data.school == null)?'':rep.data.school, textAlign: TextAlign.center,),
+                      );
+                    }
                   }
                   else if (rep.hasError){
                     return Text("${rep.error}");
