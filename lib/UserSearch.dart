@@ -252,7 +252,7 @@ class _UserSearchState extends State<UserSearch>{
                       List<String> navigate = await Functions.chooseList(context, samePplList);
                       if(navigate != null && navigate[0] == 'true'){
                         /// set up arguments and push to desired route
-                        List<String> args = [widget.test, navigate[1], navigate[2], navigate[3], 'true'];
+                        List<String> args = [widget.test, navigate[1], navigate[2], navigate[3], 'false'];
                         Navigator.pushNamed(context, route, arguments: args);
                       } else {
                         /// find no people, show alert to call user type again
@@ -261,7 +261,7 @@ class _UserSearchState extends State<UserSearch>{
 
                     } else if (samePplList.length == 1) {
                       /// set up arguments and push to desired route
-                      List<String> args = [widget.test, samePplList[0].id, samePplList[0].name, samePplList[0].birth, 'true'];
+                      List<String> args = [widget.test, samePplList[0].id, samePplList[0].name, samePplList[0].birth, 'false'];
                       Navigator.pushNamed(context, route, arguments: args);
                     } else {
                       /// find no people, show alert to call user type again

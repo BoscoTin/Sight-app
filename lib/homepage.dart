@@ -155,7 +155,7 @@ class HomePage extends StatelessWidget{
                 customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.slitLamp); },
                     'assets/images/SlitLamp.png', Strings.slitLamp, 0.21, 0.35),
                 customizeIconButton(context, (){ Navigator.pushNamed(context, '/UserSearch', arguments: Strings.reviewingProfile); },
-                    'assets/images/Review.png', Strings.reviewingProfile, 0.21, 0.35),
+                    'assets/images/Review.png', Strings.consultation, 0.21, 0.35),
               ],
             ),
           ],

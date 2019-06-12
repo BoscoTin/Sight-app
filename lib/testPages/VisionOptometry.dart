@@ -204,14 +204,14 @@ class _VisionOptometryState extends State<VisionOptometry>{
               // Construct the visionTest object
               VisionTest newVisionTest = new VisionTest(
                 //patient_id: widget.patientID,
-                  left_vision_livingEyeSight: leftFieldControllers[Strings.vision_livingEyeSight].text,
-                  left_vision_bareEyeSight: leftFieldControllers[Strings.vision_bareEyeSight].text,
-                  left_vision_eyeGlasses: leftFieldControllers[Strings.vision_eyeGlasses].text,
-                  left_vision_bestEyeSight: leftFieldControllers[Strings.vision_bestEyeSight].text,
-                  right_vision_livingEyeSight: rightFieldControllers[Strings.vision_livingEyeSight].text,
-                  right_vision_bareEyeSight: rightFieldControllers[Strings.vision_bareEyeSight].text,
-                  right_vision_eyeGlasses: rightFieldControllers[Strings.vision_eyeGlasses].text,
-                  right_vision_bestEyeSight: rightFieldControllers[Strings.vision_bestEyeSight].text
+                  left_vision_livingEyeSight: (leftFieldControllers[Strings.vision_livingEyeSight] == null)? '': leftFieldControllers[Strings.vision_livingEyeSight].text,
+                  left_vision_bareEyeSight: (leftFieldControllers[Strings.vision_bareEyeSight] == null)? '': leftFieldControllers[Strings.vision_bareEyeSight].text,
+                  left_vision_eyeGlasses: (leftFieldControllers[Strings.vision_eyeGlasses] == null)? '' : leftFieldControllers[Strings.vision_eyeGlasses].text,
+                  left_vision_bestEyeSight: (leftFieldControllers[Strings.vision_bestEyeSight] == null)? '' : leftFieldControllers[Strings.vision_bestEyeSight].text,
+                  right_vision_livingEyeSight: (rightFieldControllers[Strings.vision_livingEyeSight] == null)? '' :rightFieldControllers[Strings.vision_livingEyeSight].text,
+                  right_vision_bareEyeSight: (rightFieldControllers[Strings.vision_bareEyeSight] == null)? '' : rightFieldControllers[Strings.vision_bareEyeSight].text,
+                  right_vision_eyeGlasses: (rightFieldControllers[Strings.vision_eyeGlasses] == null)? '' : rightFieldControllers[Strings.vision_eyeGlasses].text,
+                  right_vision_bestEyeSight: (rightFieldControllers[Strings.vision_bestEyeSight] == null)? '' : rightFieldControllers[Strings.vision_bestEyeSight].text
               );
               // Call the API
               VisionTest newData = await createVisionTest(widget.profileID, body: newVisionTest.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });

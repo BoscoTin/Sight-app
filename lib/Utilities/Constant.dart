@@ -20,7 +20,7 @@ class Constants{
   static const consultationTabNumber = 5;
 
   /// FOR BUILDING TESTPAGES
-  static const List<String> visionTest = [Strings.vision_livingEyeSight, Strings.vision_bareEyeSight, Strings.vision_eyeGlasses, Strings.vision_bestEyeSight];
+  static const List<String> visionTest = [Strings.vision_bareEyeSight, Strings.vision_eyeGlasses];
   static const List<String> optometry =[Strings.opto_diopter, Strings.opto_astigmatism, Strings.opto_astigmatismaxis];
 
   // slit lamp
