@@ -58,11 +58,11 @@ class BasicInfo{
   }
 }
 
-Future<List<BasicInfo>> getSameInfos(String name, String date, String school) async{
+Future<List<BasicInfo>> getSameInfos(String name, String date, String school, String idCard) async{
   http.Response response;
 
   String queryPath = Constants.URL_STU;
-  if(name != '' || date != '' || school != ''){
+  if(name != '' || date != '' || school != '' || idCard != ''){
     queryPath += '?';
   }
   // TODO: check entity name
@@ -74,6 +74,9 @@ Future<List<BasicInfo>> getSameInfos(String name, String date, String school) as
   }
   if(school != ''){
     queryPath += 'studentSchool=${school}&';
+  }
+  if(idCard != ''){
+    queryPath += 'studentIDCard=${idCard}&';
   }
   queryPath = queryPath.substring(0, queryPath.length - 1);
 

@@ -31,6 +31,7 @@ class _UserSearchState extends State<UserSearch>{
   TextEditingController patientNameController;
   TextEditingController schoolController;
   DateTime studentDateOfBirth;
+  TextEditingController idCardController;
 
   /// define back press action
   Future<bool> Function(BuildContext) backPressed = (BuildContext context) => Functions.onBackPressedAlert(
@@ -44,6 +45,7 @@ class _UserSearchState extends State<UserSearch>{
   void initState(){
     patientNameController = new TextEditingController();
     schoolController = new TextEditingController();
+    idCardController = new TextEditingController();
     studentDateOfBirth = null;
     super.initState();
   }
@@ -163,6 +165,35 @@ class _UserSearchState extends State<UserSearch>{
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
 
+              /// THE ID CARD INPUT FIELD
+              Card(
+                color: Theme.of(context).disabledColor,
+                child: ListTile(
+                  leading: Text( Strings.IDCard,
+                    style: TextStyle(
+                        fontSize: Constants.normalFontSize
+                    ),
+                  ),
+                  title: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: Strings.typeHere,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).buttonColor
+                        )
+                    ),
+                    controller: idCardController,
+                    // Set the keyboard
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: Constants.normalFontSize),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
+
               /// CONFIRM BUTTON
               GestureDetector(
                 child: Container(
@@ -194,7 +225,8 @@ class _UserSearchState extends State<UserSearch>{
                   String patientName = patientNameController.text;
                   String dateOfBirth = (studentDateOfBirth == null)? '' : DateFormat('yyyy.MM.dd').format(studentDateOfBirth);
                   String school = schoolController.text;
-                  List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth, school).timeout(const Duration(seconds: 10), onTimeout: () => null );
+                  String idCard = idCardController.text;
+                  List<BasicInfo> samePplList = await getSameInfos(patientName, dateOfBirth, school, idCard).timeout(const Duration(seconds: 10), onTimeout: () => null );
 
                   /// set up navigating route
                   String route;
@@ -249,6 +281,9 @@ class _UserSearchState extends State<UserSearch>{
                   });
                 },
               ),
+
+              // keyboard height
+              SizedBox(height: MediaQuery.of(context).viewInsets.bottom,)
             ],
           ),
         ),

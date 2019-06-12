@@ -309,9 +309,9 @@ class _RegisterState extends State<Register>{
                     if(patientinfo != null){
                       // Write to check-record database
                       PatientID newPatientID = new PatientID(
-                          patientName: nameController.text,
-                          patientBirth: DateFormat('yyyy.MM.dd').format(dateOfBirth),
-                          patientID: idController.text,
+                          patientName: patientinfo.name,
+                          patientBirth: patientinfo.birth,
+                          patientID: patientinfo.id,
                           patientSchool: patientinfo.school
                       );
                       PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
