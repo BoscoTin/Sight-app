@@ -314,7 +314,11 @@ class _RegisterState extends State<Register>{
                           patientID: patientinfo.id,
                           patientSchool: patientinfo.school
                       );
-                      PatientID patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: (){ return null; });
+                      PatientID patientid;
+
+                      while(patientid == null) {
+                        patientid = await createPatientID(newPatientID.toMap()).timeout(const Duration(seconds: 10), onTimeout: () {return null;});
+                      }
 
                       // Notice the user that the patient has been added
                         Functions.showAlert(context,
