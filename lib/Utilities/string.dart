@@ -110,6 +110,9 @@ class Strings{
   static const String IDCard = '身份证';
   static const String school = '学校';
 
+  static const String noDate = '沒有日期';
+  static const String noName = '无名氏';
+
   static const String male = '男';
   static const String female = '女';
 }
