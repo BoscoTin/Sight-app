@@ -38,8 +38,8 @@ class Constants{
   static const List<String> consultation = [Strings.con_normaleyesight, Strings.con_abonormaldiopter, Strings.con_strabismus, Strings.con_trichiasis, Strings.con_conjunctivitis, Strings.choice_others];
 
   /// FOR CONNECTING TO SERVER
-  static const URL_STU = 'https://api.sightseeing.projects.sight.ust.hk/students';
-  static const URL_RECORD = 'https://api.sightseeing.projects.sight.ust.hk/check-record';
-  //static const URL_STU = 'http://113.106.224.28:3000/students';
-  //static const URL_RECORD = 'http://113.106.224.28:3000/check-record';
+  //static const URL_STU = 'https://api.sightseeing.projects.sight.ust.hk/students';
+  //static const URL_RECORD = 'https://api.sightseeing.projects.sight.ust.hk/check-record';
+  static const URL_STU = 'http://113.106.224.28:3000/students';
+  static const URL_RECORD = 'http://113.106.224.28:3000/check-record';
 }

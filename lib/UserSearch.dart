@@ -278,6 +278,7 @@ class _UserSearchState extends State<UserSearch>{
                     widget.progress = Strings.searchButton;
                     patientNameController.text = '';
                     schoolController.text = '';
+                    studentDateOfBirth = null;
                   });
                 },
               ),

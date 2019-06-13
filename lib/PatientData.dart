@@ -135,10 +135,10 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
           child: TabBarView(
               controller: _tabController,
               children: <Widget>[
-                constructTab(basicInfoList, 'basic'),
-                constructTab(checkInfoList, 'checking-right'),
-                constructTab(checkInfoList, 'checking-left'),
-                constructTab(slitExtraInfoList, 'extra'),
+                constructTab('basic'),
+                constructTab('checking-right'),
+                constructTab('checking-left'),
+                constructTab('extra'),
                 Consultation(
                   isViewing: ((widget.isReviewing == 'true')? true : false),
                   profileID: widget.profileID,
@@ -150,47 +150,47 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     );
   }
 
-  ListView constructTab(List<String> checkList, String type){
+  /*
+   Card for building single row of checked data
+   */
+  Card oneRow(String info, String value){
+    if(value == null) value = '';
+
+    return Card(
+      color: Theme.of(context).disabledColor,
+      child: ListTile(
+        leading: Text(info,
+          style: TextStyle(
+              fontSize: Constants.normalFontSize
+          ),
+        ),
+
+        title: Text(value,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: Constants.normalFontSize
+          ),
+        ),
+      ),
+    );
+  }
+
+  ListView constructTab(String type){
     List<Widget> list = [];
 
-    if(type == 'checking-right')
-      list.add(
-        Center(
-          child: Text(Strings.right,
-            style: TextStyle(
-              fontSize: Constants.normalFontSize + 5
-            ),
-          ),
-        )
-      );
-    if(type == 'checking-left')
-      list.add(
-          Center(
-            child: Text(Strings.left,
-              style: TextStyle(
-                  fontSize: Constants.normalFontSize + 5
-              ),
-            ),
-          )
-      );
-
-    for(String item in checkList){
-      switch(type){
-        case 'basic':
-          list.add(basicFieldRow(item));
-          break;
-        case 'checking-right':
-          list.add(checkingRow(item, false));
-          break;
-        case 'checking-left':
-          list.add(checkingRow(item, true));
-          break;
-        case 'extra':
-          list.add(slitExtraRow(item));
-          break;
-        default:
-          break;
-      }
+    switch(type){
+      case 'basic':
+        list = basicFieldRow();
+        break;
+      case 'checking-right':
+        list = checkingRow(false);
+        break;
+      case 'checking-left':
+        list = checkingRow(true);
+        break;
+      case 'extra':
+        list = slitExtraRow();
+        break;
     }
 
     return ListView(
@@ -199,7 +199,6 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     );
   }
 
-  // TODO: fix the future builders below so that they will not be crashed during null case
 
   /*
     # Widget for create a list tile used for showing the information
@@ -207,200 +206,89 @@ class _PatientState extends State<PatientData> with SingleTickerProviderStateMix
     @ parameter
     infoItem: take the infoItem from infoList
   */
-  Widget checkingRow (String checkInfo, bool isLeft){
-    return Container(
-      height: MediaQuery.of(context).size.height * Constants.columnRatio,
+  List<Widget> checkingRow (bool isLeft){
+    List<Widget> list = [];
 
-      child: Card(
-        color: Theme.of(context).disabledColor,
-
-        child: ListTile(
-          leading: Text(checkInfo,
-            style: TextStyle(
-              fontSize: Constants.normalFontSize
-            ),
-          ),
-
-          title: FutureBuilder<CheckInfo>(
+    list.add(
+        FutureBuilder<CheckInfo>(
             future: getCheckInfo(isLeft, widget.profileID),
             builder: (context, rep){
-              if(rep == null){
-                return Text('',);
+              if(rep.hasData){
+                return(Column(
+                  children: <Widget>[
+                    oneRow(Strings.vision_livingEyeSight, rep.data.vision_livingEyeSight),
+                    oneRow(Strings.vision_bareEyeSight, rep.data.vision_bareEyeSight),
+                    oneRow(Strings.vision_eyeGlasses, rep.data.vision_eyeGlasses),
+                    oneRow(Strings.vision_bestEyeSight, rep.data.vision_bestEyeSight),
+                    oneRow(Strings.opto_diopter, rep.data.opto_diopter),
+                    oneRow(Strings.opto_astigmatism, rep.data.opto_astigmatism),
+                    oneRow(Strings.opto_astigmatismaxis, rep.data.opto_astigmatismaxis),
+                    oneRow(Strings.slit_conjunctiva, rep.data.slit_conjunctiva),
+                    oneRow(Strings.slit_cornea, rep.data.slit_cornea),
+                    oneRow(Strings.slit_eyelid, rep.data.slit_eyelid),
+                    oneRow(Strings.slit_lens, rep.data.slit_lens),
+                    oneRow(Strings.slit_Hirschbergtest, rep.data.slit_Hirschbergtest),
+                  ],
+                ));
               }
-              else if (rep.hasData){
-                if (checkInfo == Strings.vision_livingEyeSight){
-                  return SizedBox(
-                    child: Text((rep.data.vision_livingEyeSight == null) ? '' : rep.data.vision_livingEyeSight, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.vision_bareEyeSight){
-                  return SizedBox(
-                    child: Text((rep.data.vision_bareEyeSight == null)? '' : rep.data.vision_bareEyeSight, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.vision_eyeGlasses){
-                  return SizedBox(
-                    child: Text((rep.data.vision_eyeGlasses == null)?'':rep.data.vision_eyeGlasses, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.vision_bestEyeSight){
-                  return SizedBox(
-                    child: Text((rep.data.vision_bestEyeSight == null)?'':rep.data.vision_bestEyeSight, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.opto_diopter){
-                  return SizedBox(
-                    child: Text((rep.data.opto_diopter == null)?'':rep.data.opto_diopter, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.opto_astigmatism){
-                  return SizedBox(
-                    child: Text((rep.data.opto_astigmatism == null)?'':rep.data.opto_astigmatism, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.opto_astigmatismaxis){
-                  return SizedBox(
-                    child: Text((rep.data.opto_astigmatismaxis == null)?'':rep.data.opto_astigmatismaxis, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.slit_conjunctiva) {
-                  return SizedBox(
-                    child: Text((rep.data.slit_conjunctiva == null)?'':rep.data.slit_conjunctiva, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.slit_cornea) {
-                  return SizedBox(
-                    child: Text((rep.data.slit_cornea == null)?'':rep.data.slit_cornea, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.slit_eyelid) {
-                  return SizedBox(
-                    child: Text((rep.data.slit_eyelid == null)?'':rep.data.slit_eyelid, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (checkInfo == Strings.slit_lens) {
-                  return SizedBox(
-                      child: Text((rep.data.slit_lens == null)?'':rep.data.slit_lens, textAlign: TextAlign.center,)
-                  );
-                }
-                else if (checkInfo == Strings.slit_Hirschbergtest) {
-                  return SizedBox(
-                    child: Text((rep.data.slit_Hirschbergtest == null)?'':rep.data.slit_Hirschbergtest, textAlign: TextAlign.center,),
-                  );
-                }
+              else{
+                return oneRow('档案', '搜寻中');
               }
-              else if (rep.hasError){
-                return Text("${rep.error}");
-              }
-              return Center(child: CircularProgressIndicator());
-            },
-          ),
-        ),
-      ),
+            })
     );
+
+    return list;
   }
 
-  Widget basicFieldRow (String basicInfo) {
-    return Container(
-        height: MediaQuery.of(context).size.height * Constants.columnRatio,
+  List<Widget> basicFieldRow () {
+    List<Widget> list = [];
 
-        child: Card(
-            color: Theme.of(context).disabledColor,
-
-            child: ListTile(
-              leading: Text(basicInfo,
-                style: TextStyle(
-                    fontSize: Constants.normalFontSize
-                ),
-              ),
-              title: FutureBuilder<BasicInfo>(
-                future: getBasicInfo(widget.profileID),
-                builder: (context, rep){
-                  if(rep == null){
-                    return Text('',);
-                  }
-                  else if (rep.hasData){
-                    if (basicInfo == Strings.name){
-                      return SizedBox(
-                        child: Text((rep.data.name == null)?'':rep.data.name, textAlign: TextAlign.center,),
-                      );
-                    }
-                    else if (basicInfo == Strings.phoneNumber){
-                      return SizedBox(
-                        child: Text((rep.data.number==null)?'':rep.data.number, textAlign: TextAlign.center,),
-                      );
-                    }
-                    else if (basicInfo == Strings.sex){
-                      return SizedBox(
-                        child: Text((rep.data.sex == null)?'':rep.data.sex, textAlign: TextAlign.center,),
-                      );
-                    }
-                    else if (basicInfo == Strings.dateOfBirth){
-                      return SizedBox(
-                        child: Text((rep.data.birth == null)?'':rep.data.birth, textAlign: TextAlign.center,),
-                      );
-                    }
-                    else if (basicInfo == Strings.IDCard){
-                      return SizedBox(
-                        child: Text((rep.data.id == null)?'':rep.data.id, textAlign: TextAlign.center,),
-                      );
-                    }
-                    else if (basicInfo == Strings.school){
-                      return SizedBox(
-                        child: Text((rep.data.school == null)?'':rep.data.school, textAlign: TextAlign.center,),
-                      );
-                    }
-                  }
-                  else if (rep.hasError){
-                    return Text("${rep.error}");
-                  }
-                  return Center(child:CircularProgressIndicator());
-                },
-              ),
-            )
-        )
+    list.add(
+        FutureBuilder<BasicInfo>(
+            future: getBasicInfo(widget.profileID),
+            builder: (context, rep){
+              if(rep.hasData){
+                return( Column(
+                  children: <Widget>[
+                    oneRow(Strings.name, rep.data.name),
+                    oneRow(Strings.phoneNumber, rep.data.number),
+                    oneRow(Strings.sex, rep.data.sex),
+                    oneRow(Strings.dateOfBirth, rep.data.birth),
+                    oneRow(Strings.IDCard, rep.data.id),
+                    oneRow(Strings.school, rep.data.school)
+                  ],
+                ));
+              }
+              else{
+                return oneRow('档案', '搜寻中');
+              }
+            })
     );
+
+    return list;
   }
 
-  Widget slitExtraRow (String slitExtraInfo) {
-    return Container(
-      height: MediaQuery.of(context).size.height * Constants.columnRatio,
+  List<Widget> slitExtraRow () {
+    List<Widget> list = [];
 
-      child: Card(
-        color: Theme.of(context).disabledColor,
-
-        child: ListTile(
-          leading: Text(slitExtraInfo,
-            style: TextStyle(
-                fontSize: Constants.normalFontSize
-            ),
-          ),
-          title: FutureBuilder<SlitExtraInfo>(
+    list.add(
+        FutureBuilder<SlitExtraInfo>(
             future: getSlitExtraInfo(widget.profileID),
             builder: (context, rep){
-              if(rep == null){
-                return Text('',);
+              if(rep.hasData){
+                return(Column(
+                  children: <Widget>[
+                    oneRow(Strings.slit_exchange, rep.data.slit_exchange),
+                    oneRow(Strings.slit_eyeballshivering, rep.data.slit_eyeballshivering)
+                  ],
+                ));
               }
-              else if (rep.hasData){
-                if (slitExtraInfo == Strings.slit_exchange){
-                  return SizedBox(
-                    child: Text((rep.data.slit_exchange == null)?'':rep.data.slit_exchange, textAlign: TextAlign.center,),
-                  );
-                }
-                else if (slitExtraInfo == Strings.slit_eyeballshivering){
-                  return SizedBox(
-                    child: Text((rep.data.slit_eyeballshivering == null)?'':rep.data.slit_eyeballshivering, textAlign: TextAlign.center,),
-                  );
-                }
+              else{
+                return oneRow('档案', '搜寻中');
               }
-              else if (rep.hasError){
-                return Text("${rep.error}");
-              }
-              return CircularProgressIndicator();
-            },
-          ),
-        ),
-      ),
+            })
     );
+
+    return list;
   }
 }
